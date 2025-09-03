@@ -119,7 +119,7 @@ const PersonaManagement: React.FC<PersonaManagementProps> = ({ initialPersonas, 
         <h2 className="text-2xl font-bold text-gray-900">Your Custom Personas</h2>
         <button
           onClick={handleAddClick}
-          className="px-4 py-2.5 bg-mint-palette-500 text-white font-semibold rounded-lg shadow-md hover:bg-mint-palette-600 transition-all duration-300 transform hover:-translate-y-0.5"
+          className="px-4 py-2.5 bg-emerald-700 text-white font-semibold rounded-lg shadow-md hover:bg-emerald-800 transition-all duration-300 transform hover:-translate-y-0.5"
           disabled={loading}
         >
           Add New Persona
@@ -132,7 +132,7 @@ const PersonaManagement: React.FC<PersonaManagementProps> = ({ initialPersonas, 
           <div className="relative z-10 flex flex-col h-full">
             <div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">{DEFAULT_PERSONA.name}</h3>
-              {/* FIX: Removed line-clamp-3 to show full description */}
+           
               <p className="text-gray-600 text-sm mb-4">{DEFAULT_PERSONA.instructions}</p>
             </div>
             <div className="flex justify-end items-center space-x-3 mt-4">

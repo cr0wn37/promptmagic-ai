@@ -1,4 +1,4 @@
-// src/app/dashboard/hr/page.tsx (Example for HR)
+// src/app/dashboard/hr/page.tsx 
 // This is a Server Component
 
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
@@ -8,11 +8,11 @@ import { redirect } from 'next/navigation';
 import CategoryPromptRunner from '@/components/CategoryPromptRunner';
 
 export const metadata = {
-  title: 'Education Prompts | MicroPrompt AI', // Update title
-  description: 'AI-powered Education prompt workflows.', // Update description
+  title: 'Education Prompts | MicroPrompt AI', 
+  description: 'AI-powered Education prompt workflows.',
 };
 
-export default async function EducationPage() { // Update function name
+export default async function EducationPage() { 
   const supabase = createServerComponentClient({ cookies: () => cookies() });
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -22,7 +22,7 @@ export default async function EducationPage() { // Update function name
 
   return (
     <div className="p-6">
-      {/* Update emoji and text for the heading */}
+    
       <h1 className="text-2xl font-bold text-mint-palette-700 dark:text-mint-palette-200 mb-6">
         🎓 Education Prompt Workspace
       </h1>
@@ -30,7 +30,7 @@ export default async function EducationPage() { // Update function name
         Select a pre-defined Education prompt and generate tailored AI responses.
       </p>
 
-      {/* Pass the correct category prop */}
+     
       <CategoryPromptRunner category="Education" />
     </div>
   );

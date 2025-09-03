@@ -71,9 +71,9 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-mint-palette-50 to-mint-palette-100 p-4">
-      {/* Central Card Container */}
+      
       <div className="relative w-full max-w-4xl mx-auto flex rounded-3xl shadow-2xl overflow-hidden bg-white my-8">
-        {/* Left Section: Form */}
+      
         <div className="w-full md:w-1/2 flex items-center justify-center p-6 sm:p-8 lg:p-10 text-gray-900">
           <div className="w-full max-w-xs space-y-6 animate-fade-in-up">
             <div className="text-center md:text-left">
@@ -81,7 +81,7 @@ const LoginPage: React.FC = () => {
               <p className="text-gray-600 text-base">Welcome back to the community.</p>
             </div>
 
-            {/* Google Login Button */}
+        
             <button
               onClick={handleGoogleLogin}
               disabled={loading}
@@ -148,10 +148,10 @@ const LoginPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Section: Gradient Background with Text */}
-        <div className="hidden md:flex w-1/2 items-center justify-center p-8 sm:p-12 lg:p-16 bg-gradient-to-br from-mint-palette-200 to-mint-palette-400 text-mint-palette-800 text-center flex-col"> {/* Adjusted gradient to lighter mint shades */}
+       
+        <div className="hidden md:flex w-1/2 items-center justify-center p-8 sm:p-12 lg:p-16 bg-gradient-to-br from-mint-palette-200 to-mint-palette-400 text-mint-palette-800 text-center flex-col"> 
           <h2 className="text-4xl font-extrabold leading-tight mb-4 drop-shadow-lg">
-            MicroPrompt AI
+            PromptMagic AI
           </h2>
           <p className="text-lg leading-relaxed opacity-90 max-w-md">
             Unleash tailored, persona-driven AI content. Get clean, actionable responses for every niche.
@@ -159,7 +159,7 @@ const LoginPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Tailwind CSS Animations */}
+     
       <style jsx>{`
         @keyframes fadeInFromBottom {
           0% { opacity: 0; transform: translateY(20px); }

@@ -1,14 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-// Removed specific Shadcn UI component imports, using plain HTML elements instead
-// import { Input } from '@/components/ui/input'; // No longer needed
-// import { Label } from '@/components/ui/label'; // No longer needed
-// import { Textarea } from '@/components/ui/textarea'; // No longer needed
-// import { Button } from '@/components/ui/button'; // No longer needed
 
-// IMPORTANT: These Dialog components MUST be correctly set up in your project
-// If you still get an error after this, the issue is with your @/components/ui/dialog setup.
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 
 interface PersonaFormProps {
@@ -31,7 +24,7 @@ const PersonaForm: React.FC<PersonaFormProps> = ({ initialData, onSave, onCancel
       setName('');
       setInstructions('');
     }
-    setHasError(false); // Reset error on initialData change
+    setHasError(false);
   }, [initialData]);
 
   const handleSubmit = () => {
@@ -46,7 +39,7 @@ const PersonaForm: React.FC<PersonaFormProps> = ({ initialData, onSave, onCancel
   return (
     <div className="grid gap-4 py-4">
       <div className="grid grid-cols-4 items-center gap-4">
-        <label htmlFor="name" className="text-right text-gray-700"> {/* Using plain HTML label */}
+        <label htmlFor="name" className="text-right text-gray-700"> 
           Name
         </label>
         <input 
@@ -61,7 +54,7 @@ const PersonaForm: React.FC<PersonaFormProps> = ({ initialData, onSave, onCancel
         />
       </div>
       <div className="grid grid-cols-4 items-center gap-4">
-        <label htmlFor="instructions" className="text-right text-gray-700"> {/* Using plain HTML label */}
+        <label htmlFor="instructions" className="text-right text-gray-700"> 
           Instructions
         </label>
         <textarea 

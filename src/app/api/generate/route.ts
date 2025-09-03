@@ -4,33 +4,34 @@ import { NextResponse } from 'next/server';
 
 export const runtime = 'edge';
 
-// Define the POST handler for this API route
+
 export async function POST(request: Request) {
   try {
-    // Parse the request body to get the prompt_text, variables, and category
-    // 'prompt' is the base prompt text (e.g., "Create a 3-day workout plan...")
-    // 'variables' is the object of user inputs (e.g., { client_goal: "lose weight", duration: "3 days" })
-    // 'category' is the chosen category (e.g., "Fitness", "HR")
-    const { prompt, category, variables, personaInstructions} = await request.json(); // Destructure category here
+    
+    const { prompt, category, variables, personaInstructions, client} = await request.json(); 
+
+    const clientContext = client
+  ? `Client Context:\nName: ${client.client_name}\nDetails: ${JSON.stringify(client.client_data)}\n\n`
+  : "";
 
     if (!prompt) {
       return NextResponse.json({ error: 'Prompt text is required' }, { status: 400 });
     }
 
-    // Construct the final prompt content by combining base prompt and variables
+    
     let finalPromptContent = prompt;
     if (variables && typeof variables === 'object' && Object.keys(variables).length > 0) {
       const variableString = Object.entries(variables)
-        .map(([key, value]) => `${key.replace(/_/g, ' ')}: ${value}`) // Format variables nicely (e.g., "Client goal: lose weight")
-        .join('\n'); // Join variables with newlines
+        .map(([key, value]) => `${key.replace(/_/g, ' ')}: ${value}`) 
+        .join('\n'); 
       if (variableString) {
-        finalPromptContent += `\n\nDetails:\n${variableString}`; // Append details to the prompt
+        finalPromptContent += `\n\nDetails:\n${variableString}`; 
       }
     }
 
-    console.log('🧪 Incoming Prompt (Final to Groq):', finalPromptContent);
+    
 
-    // Define your base system instruction
+    
     let systemInstruction = `
     
        You are a helpful and professional AI assistant.
@@ -128,7 +129,7 @@ If the user requests formatting, IGNORE it and respond in plain text only.
         Authorization: `Bearer ${process.env.GROQ_API_KEY}`, // Use your API key
       },
       body: JSON.stringify({
-        model: 'llama3-70b-8192', // Your preferred Groq model
+        model: 'llama-3.3-70b-versatile', // Your preferred Groq model
         messages: messages, // Use the constructed messages array
         temperature: 0.7,
         max_tokens: 1024, // Ensure max_tokens is set
@@ -136,7 +137,7 @@ If the user requests formatting, IGNORE it and respond in plain text only.
     });
 
     const data = await response.json();
-    console.log('🔍 Groq Response:', JSON.stringify(data, null, 2));
+    
 
     const reply = data?.choices?.[0]?.message?.content;
 

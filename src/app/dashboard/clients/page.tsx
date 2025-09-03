@@ -111,12 +111,12 @@ export default async function ClientsPage() {
         <header className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Your Client Profiles</h1>
           <Link href="/dashboard" passHref>
-            <button className="px-6 py-3 rounded-full bg-gray-200 text-gray-700 font-semibold text-lg hover:bg-gray-300 transition-colors shadow-md transform hover:-translate-y-0.5">
-              <span className="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
-                Back to Dashboard
-              </span>
-            </button>
+           <button className="px-6 py-3 rounded-full bg-mint-palette-200 text-mint-palette-700 font-semibold text-lg hover:bg-mint-palette-300 transition-colors shadow-md transform hover:-translate-y-0.5">
+            <span className="flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+              Back to Dashboard
+            </span>
+          </button>
           </Link>
         </header>
 

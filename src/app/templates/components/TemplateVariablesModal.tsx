@@ -34,7 +34,7 @@ const TemplateVariablesModal: React.FC<TemplateVariablesModalProps> = ({
   const [selectedClientId, setSelectedClientId] = useState<string | null>(null);
 
   useEffect(() => {
-    // Reset local state when the modal opens with new variables
+     
     if (isOpen) {
       setLocalVariables(variables);
       setSelectedClientId(null);
@@ -63,7 +63,7 @@ const TemplateVariablesModal: React.FC<TemplateVariablesModalProps> = ({
         });
       }
     } else {
-      // If "No Client Selected" is chosen, reset the variables to their original state
+       
       setLocalVariables(variables);
     }
   }, [clients, variables]);
@@ -91,26 +91,7 @@ const TemplateVariablesModal: React.FC<TemplateVariablesModalProps> = ({
               {templateText}
             </p>
           </div>
-          <div className="flex flex-col space-y-2">
-            <label htmlFor="client-select" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-              Select Client (Optional)
-            </label>
-            <select
-              id="client-select"
-              value={selectedClientId || ''}
-              onChange={handleClientSelect}
-              className="w-full border rounded-lg p-2"
-              disabled={isGenerating}
-            >
-              <option value="">No Client Selected</option>
-              {/* FIX: Add conditional check to prevent .map() on undefined */}
-              {clients && clients.map((client) => (
-                <option key={client.id} value={client.id}>
-                  {client.client_name}
-                </option>
-              ))}
-            </select>
-          </div>
+          
           {Object.keys(localVariables).map((key) => (
             <div key={key} className="grid grid-cols-4 items-center gap-4">
               <label htmlFor={key} className="text-right capitalize">

@@ -4,7 +4,7 @@ import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-// Import the generic CategoryPromptRunner
+
 import CategoryPromptRunner from '@/components/CategoryPromptRunner';
 
 export const metadata = {
@@ -29,7 +29,7 @@ export default async function SalesPage() {
         Select a pre-defined Sales prompt and generate tailored AI responses.
       </p>
 
-      {/* Render the generic CategoryPromptRunner and pass the 'Marketing' category */}
+      
       <CategoryPromptRunner category="Sales" />
     </div>
   );

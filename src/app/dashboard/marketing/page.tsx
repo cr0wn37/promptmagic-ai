@@ -1,10 +1,10 @@
-// src/app/dashboard/marketing/page.tsx (This is a Server Component)
+// src/app/dashboard/marketing/page.tsx 
 
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-// Import the generic CategoryPromptRunner
+
 import CategoryPromptRunner from '@/components/CategoryPromptRunner';
 
 export const metadata = {
@@ -29,7 +29,7 @@ export default async function MarketingPage() {
         Select a pre-defined marketing prompt and generate tailored AI responses.
       </p>
 
-      {/* Render the generic CategoryPromptRunner and pass the 'Marketing' category */}
+     
       <CategoryPromptRunner category="Marketing" />
     </div>
   );

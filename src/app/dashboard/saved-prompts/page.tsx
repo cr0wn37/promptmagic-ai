@@ -8,7 +8,7 @@ import { PostgrestError } from '@supabase/supabase-js';
 
 import SavedPromptsDashboard from './components/SavedPromptsDashboard';
 
-// Define types for fetched data
+
 interface PromptTable {
   category: string;
   prompt_text?: string;
@@ -26,11 +26,11 @@ interface FetchedResponse {
 
 interface FormattedPrompt {
   id: string;
-  input: string; // This holds the substituted prompt for display
-  response: string; // This will hold the AI reply
+  input: string; 
+  response: string;
   category: string;
-  timestamp: string; // Ensure timestamp is part of the interface
-  prompt_text?: string; // Original template, good for editing
+  timestamp: string; 
+  prompt_text?: string; 
   sub_category?: string;
   favorite?: boolean;
 }
@@ -101,7 +101,7 @@ export default async function SavedPromptsPage() {
         };
       });
 
-      // FIX: Filter to show only templates, as requested
+      
       const filteredForSavedPromptsPage = formattedData.filter(item => 
         item.prompt_text && (item.prompt_text.includes('{') || item.prompt_text.includes('}'))
       );

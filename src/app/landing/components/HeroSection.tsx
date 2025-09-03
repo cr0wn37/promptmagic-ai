@@ -7,7 +7,7 @@ export default function LandingPage() {
       {/* Background Image Container */}
       <div
         className="absolute inset-0 z-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/prompt-bg.png')" }}
+        style={{ backgroundImage: "url('/prompts-bg.png')" }}
       />
 
       {/* Darker Overlay for readability */}
@@ -20,9 +20,17 @@ export default function LandingPage() {
 
         {/* Hero Section Content */}
         <section className="flex-1 flex flex-col justify-center px-8 py-28 text-center transform translate-y-32">
-          <h2 className="text-5xl font-extrabold text-black dark:text-white mb-6 leading-tight">
-            AI That Speaks Your Profession’s Language
-          </h2>
+        <div className="relative inline-block mx-auto ">
+  
+
+  {/* top layer (main black text) */}
+  <h1
+    className="relative text-black font-extrabold tracking-tight 
+               text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 -mt-6"
+  >
+    AI That Speaks Your Profession’s Language
+  </h1>
+</div>
          <p className="text-lg text-gray-900 dark:text-gray-100 mb-10 max-w-2xl mx-auto rounded-xl bg-white/20 dark:bg-black/30 backdrop-blur-md border border-white/30 shadow-md p-4">
         Clean, consistent, and tailored to your clients — every single time. <br />
   Save time, boost productivity, and scale your expertise.

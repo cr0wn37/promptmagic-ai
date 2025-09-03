@@ -60,10 +60,10 @@ export default function BenefitsSection() {
     id="benefits"
     className="relative py-20 bg-cover bg-center bg-no-repeat"
     style={{
-      backgroundImage: "url('/benefitss-bg.png')", // Your new image will go here
+      backgroundImage: "url('/benefitss-bg.png')", 
     }}
   >
-    {/* Enhanced Overlay for maximum readability and modern vibe */}
+     
     <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/70 via-white/70 to-slate-50/70 backdrop-blur-[2px]"></div>
 
     <div className="relative max-w-6xl mx-auto px-6 text-center">
@@ -74,16 +74,16 @@ export default function BenefitsSection() {
         {benefits.map((item, index) => (
           <div
             key={index}
-            className="group p-6 rounded-2xl shadow-md bg-white/90 hover:bg-white hover:shadow-xl transition-all duration-300 border border-white" // Added border and group
+            className="group p-6 rounded-2xl shadow-md bg-white/90 hover:bg-white hover:shadow-xl transition-all duration-300 border border-white"  
           >
             <div className="flex justify-center mb-4">
-              {/* Optional: Add a hover effect to the icons */}
+               
               {item.icon}
             </div>
             <h3 className="text-lg font-semibold text-gray-800">
               {item.title}
             </h3>
-            <p className="text-gray-600 mt-2 text-sm leading-relaxed"> {/* Slightly smaller text for desc */}
+            <p className="text-gray-600 mt-2 text-sm leading-relaxed">  
               {item.desc}
             </p>
           </div>

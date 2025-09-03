@@ -10,12 +10,12 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import DashboardResponseCard from './components/DashboardResponseCard';
 import Link from 'next/link';
 
-// Import the TemplateVariablesModal component
-import TemplateVariablesModal from '@/app/templates/components/TemplateVariablesModal'; // Corrected import path
-// Initialize Supabase client outside the component to ensure a stable reference
+
+import TemplateVariablesModal from '@/app/templates/components/TemplateVariablesModal'; 
+
 const supabase = createClientComponentClient();
 
-// Define types for fetched and formatted data for the dashboard
+
 interface PromptTableData {
   category: string;
   prompt_text?: string;
@@ -59,8 +59,8 @@ interface Client {
 export default function Dashboard() {
   const [prompt, setPrompt] = useState('');
   const [savedPrompts, setSavedPrompts] = useState<DashboardFormattedItem[]>([]);
-  const [loading, setLoading] = useState(false); // For initial prompts fetch
-  const [generatingReplyId, setGeneratingReplyId] = useState<string | null>(null); // For AI reply generation status
+  const [loading, setLoading] = useState(false); 
+  const [generatingReplyId, setGeneratingReplyId] = useState<string | null>(null); 
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -73,40 +73,40 @@ export default function Dashboard() {
   const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] = useState(false);
   const [promptToDeleteId, setPromptToDeleteId] = useState<string | null>(null);
 
-  // Onboarding State
+ 
   const [showWelcomeModal, setShowWelcomeModal] = useState(false);
-  // Template Variable Input State
+ 
   const [showTemplateVariablesModal, setShowTemplateVariablesModal] = useState(false);
-  const [templateVariables, setTemplateVariables] = useState<Record<string, string>>({}); // Stores {variableName: value}
-  const [currentTemplatePromptText, setCurrentTemplatePromptText] = useState<string>(''); // Stores the original template text
-  const [currentTemplateCategory, setCurrentTemplateCategory] = useState<string>(''); // Stores the original template category
+  const [templateVariables, setTemplateVariables] = useState<Record<string, string>>({}); 
+  const [currentTemplatePromptText, setCurrentTemplatePromptText] = useState<string>(''); 
+  const [currentTemplateCategory, setCurrentTemplateCategory] = useState<string>(''); 
 
-const [personas, setPersonas] = useState<Persona[]>([]);
-  const [selectedPersonaId, setSelectedPersonaId] = useState<string | null>(null); // Stores selected persona ID
+  const [personas, setPersonas] = useState<Persona[]>([]);
+  const [selectedPersonaId, setSelectedPersonaId] = useState<string | null>(null); 
 
-   const [clients, setClients] = useState<Client[]>([]);
+  const [clients, setClients] = useState<Client[]>([]);
   const [selectedClientId, setSelectedClientId] = useState<string | null>(null);
 
 
-  // Helper to extract variable names from a template string
+  
   const extractVariables = useCallback((template: string): string[] => {
     const regex = /{([a-zA-Z0-9_]+)}/g;
     const matches = [...template.matchAll(regex)];
-    return Array.from(new Set(matches.map(match => match[1]))); // Get unique variable names
+    return Array.from(new Set(matches.map(match => match[1]))); 
   }, []);
 
-  // New function to handle saving and generating AI reply for templates
+  
   const handleSaveAndGenerateForTemplate = useCallback(async (templateText: string, category: string, variables: Record<string, string>,clientId: string | null) => {
-    setLoading(true); // Show overall loading for the process
-    const { data: { user }, error: authError } = await supabase.auth.getUser(); // Renamed error to authError
-    if (authError || !user) { // Use authError directly
+    setLoading(true); 
+    const { data: { user }, error: authError } = await supabase.auth.getUser(); 
+    if (authError || !user) { 
       console.error('User fetch failed:', authError);
       setLoading(false);
       toast({ title: "Authentication Error", description: "Please log in again.", variant: "destructive" });
       router.push('/auth');
       return;
     }
-    // Insert into 'prompts' table first to get prompt_id
+   
     const { data: promptData, error: promptError } = await supabase
       .from('prompts')
       .insert([{ prompt_text: templateText, category: category, user_id: user.id }])
@@ -123,9 +123,9 @@ const [personas, setPersonas] = useState<Persona[]>([]);
     const newPromptCategory = promptData[0].category;
     const newPromptCreatedAt = promptData[0].created_at;
 
-    // 2. Construct the final prompt text for AI generation using substituted variables
+   
     let promptForAI = templateText;
-    let inputVariablesForDB: Record<string, string> = { text: templateText, category: category, ...variables }; // Store all variables
+    let inputVariablesForDB: Record<string, string> = { text: templateText, category: category, ...variables }; 
   
      const selectedClient = clients.find(c => c.id === selectedClientId);
     const clientContext = selectedClient ? `Client Profile: Name - ${selectedClient.client_name}, Details - ${JSON.stringify(selectedClient.client_data)}` : '';
@@ -154,7 +154,7 @@ const [personas, setPersonas] = useState<Persona[]>([]);
         promptForAI = promptForAI.split(placeholder).join(value);
       }
     }
-    // If the template itself didn't have placeholders but we want to pass the raw text to AI
+    
     if (!templateText.includes('{') && !templateText.includes('}')) {
       promptForAI = templateText;
     }
@@ -166,19 +166,19 @@ const [personas, setPersonas] = useState<Persona[]>([]);
 
     const finalPromptForAI = `${personaInstructions ? personaInstructions + ' ' : ''}${clientContext}\n${promptForAI}`;
 
-    // 3. Generate AI Reply
-    setGeneratingReplyId(newPromptId); // Show loading for this new prompt
+    
+    setGeneratingReplyId(newPromptId); 
     let aiReply = '';
     try {
-      console.log('💬 Prompt sent to Groq for template:', finalPromptForAI);
+     
       const response = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt:finalPromptForAI, category: category, variables: inputVariablesForDB , personaInstructions: personaInstructions }), // Pass variables to API for advanced instructions
+        body: JSON.stringify({ prompt:finalPromptForAI, category: category, variables: inputVariablesForDB , personaInstructions: personaInstructions }), 
       });
       const result = await response.json();
       aiReply = result?.reply || 'No AI reply returned from Groq.';
-      console.log('Groq Reply for template:', aiReply);
+      
     } catch (err: any) {
       console.error('Error generating reply for template:', err);
       aiReply = 'Error generating reply for template.';
@@ -186,14 +186,14 @@ const [personas, setPersonas] = useState<Persona[]>([]);
     } finally {
       setGeneratingReplyId(null);
     }
-    // 4. Save the AI reply and input_variables to the 'responses' table
+    
 
     const { data: responseData, error: responseError } = await supabase
       .from('responses')
       .insert([{
         prompt_id: newPromptId,
         user_id: user.id,
-        input_variables: inputVariablesForDB, // Store all input variables
+        input_variables: inputVariablesForDB, 
         ai_reply: aiReply,
         created_at: newPromptCreatedAt
       }])
@@ -202,7 +202,7 @@ const [personas, setPersonas] = useState<Persona[]>([]);
     if (responseError) {
       console.error('❌ Error saving response for template:', responseError);
       toast({ title: "Error saving AI reply", description: responseError.message, variant: "destructive" });
-      // If response saving fails, still show the prompt, but without AI reply
+     
       setSavedPrompts((prev) => [{
         id: newPromptId,
         promptInput: promptForAI,
@@ -216,22 +216,22 @@ const [personas, setPersonas] = useState<Persona[]>([]);
       setLoading(false);
       return;
     }
-    console.log('✅ Template Prompt and Response saved:', responseData);
+    
 
-    // 5. Update local state with the newly created prompt and its AI reply
+    
     setSavedPrompts((prev) => [{
-      id: responseData[0].id, // Use response ID
-      promptInput: promptForAI, // Substituted text
+      id: responseData[0].id,
+      promptInput: promptForAI,
       aiResponse: aiReply,
       category: newPromptCategory,
       timestamp: responseData[0].created_at,
-      prompt_text_template: templateText, // Original template
+      prompt_text_template: templateText, 
       favorite: false,
       loading: false,
     }, ...prev]);
 
-    setPrompt(''); // Clear the main prompt input
-    setInputCategory(''); // Clear the main category input
+    setPrompt(''); 
+    setInputCategory(''); 
     toast({
       title: "Template Used!",
       description: "AI response generated and saved.",
@@ -240,7 +240,7 @@ const [personas, setPersonas] = useState<Persona[]>([]);
 
     setLoading(false);
   }, [generatingReplyId, router, toast, extractVariables, supabase, personas, selectedPersonaId, clients]);
-  // Read template from URL on mount
+  
 
 const fetchPersonas = useCallback(async (userId: string) => {
     const { data, error } = await supabase
@@ -267,8 +267,7 @@ const fetchPersonas = useCallback(async (userId: string) => {
       console.error('Error fetching clients:', error);
     } else {
       setClients(data || []);
-      // FIX: Removed the line that automatically sets a default client.
-      // The default state should be 'No Client Selected' (null).
+      
     }
   }, []);
 
@@ -276,25 +275,24 @@ const fetchPersonas = useCallback(async (userId: string) => {
   useEffect(() => {
     const templateFromUrl = searchParams.get('template');
     const categoryFromTemplateUrl = searchParams.get('category');
-    console.log("[DashboardPage useEffect] templateFromUrl:", templateFromUrl); // DEBUG
-    console.log("[DashboardPage useEffect] categoryFromTemplateUrl:", categoryFromTemplateUrl); // DEBUG
-     const clientIdFromUrl = searchParams.get('clientId'); // FIX: Get the clientId from the URL
+    
+    
+     const clientIdFromUrl = searchParams.get('clientId'); 
     const variablesFromUrl = searchParams.get('variables');
 
     if (templateFromUrl) {
       const decodedTemplate = decodeURIComponent(templateFromUrl);
       const decodedCategory = categoryFromTemplateUrl ? decodeURIComponent(categoryFromTemplateUrl) : '';
-       const decodedClientId = clientIdFromUrl ? decodeURIComponent(clientIdFromUrl) : null;
+      const decodedClientId = clientIdFromUrl ? decodeURIComponent(clientIdFromUrl) : null;
       const decodedVariables = variablesFromUrl ? JSON.parse(decodeURIComponent(variablesFromUrl)) : {};
   
-      console.log("[DashboardPage useEffect] Decoded Template:", decodedTemplate); // DEBUG
-      console.log("[DashboardPage useEffect] Decoded Category:", decodedCategory); // DEBUG
+      
       setCurrentTemplatePromptText(decodedTemplate);
       setCurrentTemplateCategory(decodedCategory);
       setSelectedCategory(decodedCategory);
       setSelectedClientId(decodedClientId);
 
-     // FIX: Set the selected client state from the URL
+
       if (clientIdFromUrl) {
         setSelectedClientId(clientIdFromUrl);
       } else {
@@ -317,20 +315,17 @@ const fetchPersonas = useCallback(async (userId: string) => {
           extractedVars.forEach(v => { initialVars[v] = ''; });
         }
         setTemplateVariables(initialVars);
-        setShowTemplateVariablesModal(true); // Show modal to fill variables
-        console.log("[DashboardPage useEffect] Showing TemplateVariablesModal."); // DEBUG
+        setShowTemplateVariablesModal(true); 
+       
       } else {
-        console.log("[DashboardPage useEffect] No variables found, triggering auto-generate."); // DEBUG
+        
         setPrompt(decodedTemplate);
         setInputCategory(decodedCategory);
         setSelectedCategory(decodedCategory);
-        // Automatically trigger AI reply generation for templates without variables
        handleSaveAndGenerateForTemplate(decodedTemplate, decodedCategory, decodedVariables, decodedClientId);
       
       }
-      // Clear the query parameters from the URL after reading them
       router.replace(pathname);
-      console.log("[DashboardPage useEffect] Cleared URL query parameters."); // DEBUG
     }
   }, [searchParams, router, pathname, extractVariables,  handleSaveAndGenerateForTemplate, clients, personas, selectedPersonaId]);
 
@@ -342,13 +337,12 @@ const fetchPersonas = useCallback(async (userId: string) => {
   // Fetch prompts on component mount
   useEffect(() => {
     const fetchUserPrompts = async () => {
-      const { data: { user }, error: authError } = await supabase.auth.getUser(); // Renamed error to authError
-      console.log("[DashboardPage] User fetched:", user);
+      const { data: { user }, error: authError } = await supabase.auth.getUser(); 
       if (user) {
         fetchPrompts(user);
        fetchPersonas(user.id);
        fetchClients(user.id); 
-        // Onboarding Check: Show welcome modal only once per user
+      
         const hasSeenWelcome = localStorage.getItem(`welcomeModalSeen_${user.id}`);
         if (!hasSeenWelcome) {
           setShowWelcomeModal(true);
@@ -362,7 +356,7 @@ const fetchPersonas = useCallback(async (userId: string) => {
   }, [router, toast, fetchPersonas , fetchClients]);
   
 
-// Function to dismiss welcome modal and set flag in local storage
+
   const handleDismissWelcome = useCallback(() => {
     setShowWelcomeModal(false);
     supabase.auth.getUser().then(({ data: { user } }) => {
@@ -374,7 +368,6 @@ const fetchPersonas = useCallback(async (userId: string) => {
 
   const fetchPrompts = useCallback(async (user: any) => {
     setLoading(true);
-    console.log(`[DashboardPage] Fetching prompts for user ID: ${user?.id}`);
     const { data, error } = await supabase
       .from('responses')
       .select<string, FetchedResponseData>(`
@@ -398,8 +391,8 @@ const fetchPersonas = useCallback(async (userId: string) => {
       return;
     }
 
-    // Process and format the fetched data, including variable substitution
-    const enhanced: DashboardFormattedItem[] = data.map(item => {
+ 
+      const enhanced: DashboardFormattedItem[] = data.map(item => {
       const originalTemplate = item.prompts?.prompt_text;
       const inputVariables = item.input_variables || {};
       const rawUserInputText = inputVariables.text || '';
@@ -462,7 +455,6 @@ const fetchPersonas = useCallback(async (userId: string) => {
       });
       return;
     }
-    // Insert into 'prompts' table first to get prompt_id
 
     const { data: promptData, error: promptError } = await supabase
       .from('prompts')
@@ -487,14 +479,14 @@ const fetchPersonas = useCallback(async (userId: string) => {
     const selectedPersona = personas.find(p => p.id === selectedPersonaId);
     const personaInstructions = selectedPersona ? selectedPersona.instructions : undefined;
     
-    // NEW: Get selected client data and include in prompt
+    
     const selectedClient = clients.find(c => c.id === selectedClientId);
     const clientContext = selectedClient ? `Client Profile: Name - ${selectedClient.client_name}, Details - ${JSON.stringify(selectedClient.client_data)}` : '';
 
     const finalPromptForAI = `${clientContext}\n${newPromptText}`;
 
 
-    // Now insert into 'responses' table
+   
     const { data: responseData, error: responseError } = await supabase
       .from('responses')
       .insert([{
@@ -519,7 +511,7 @@ const fetchPersonas = useCallback(async (userId: string) => {
       return;
     }
 
-  console.log('✅ Prompt and Response saved:', responseData); 
+  
 
     setSavedPrompts((prev) => [{
       id: responseData[0].id,
@@ -549,11 +541,11 @@ const fetchPersonas = useCallback(async (userId: string) => {
   }, []);
 const executeDelete = useCallback(async () => {
     if (promptToDeleteId) {
-      // Optimistic UI update: Remove the item from local state immediately
+    
       setSavedPrompts(prevPrompts => prevPrompts.filter(p => p.id !== promptToDeleteId));
-      setShowConfirmDeleteDialog(false); // Close dialog immediately
+      setShowConfirmDeleteDialog(false); 
 
-      // Step 1: Find the prompt_id associated with this response_id
+  
       const { data: responseData, error: fetchResponseError } = await supabase
         .from('responses')
         .select('prompt_id')
@@ -563,21 +555,21 @@ const executeDelete = useCallback(async () => {
       if (fetchResponseError || !responseData) {
         console.error('Error fetching prompt_id for response during delete:', fetchResponseError);
         toast({ title: "Delete Error", description: "Could not find prompt to delete.", variant: "destructive" });
-        // Revert optimistic update if there was an error finding prompt_id
+        
         const { data: { user } } = await supabase.auth.getUser();
-        if (user) fetchPrompts(user); // Re-fetch to sync state
+        if (user) fetchPrompts(user); 
         return;
       }
 
       const promptIdToDelete = responseData.prompt_id;
 
-      // Step 2: Delete from 'responses' table first to respect foreign key constraint
+     
       const { error: deleteResponseError } = await supabase
         .from('responses')
         .delete()
         .eq('id', promptToDeleteId);
 
-      // Step 3: Delete from 'prompts' table next
+      
       const { error: deletePromptError } = await supabase
         .from('prompts')
         .delete()
@@ -591,16 +583,16 @@ const executeDelete = useCallback(async () => {
           description: (deleteResponseError || deletePromptError)?.message || "Failed to delete prompt.",
           variant: "destructive",
         });
-        // Revert optimistic update if deletion failed on server
+        
         const { data: { user } } = await supabase.auth.getUser();
-        if (user) fetchPrompts(user); // Re-fetch to sync state
+        if (user) fetchPrompts(user); 
       } else {
         toast({
           title: "Prompt Deleted!",
           description: "The prompt has been successfully removed.",
           variant: "default",
         });
-        // Refresh the activity data after a successful delete
+        
         const { data: { user } } = await supabase.auth.getUser();
         
       }
@@ -663,16 +655,16 @@ const executeDelete = useCallback(async () => {
         return;
       }
 
-       const selectedPersona = personas.find(p => p.id === selectedPersonaId);
+      const selectedPersona = personas.find(p => p.id === selectedPersonaId);
       const personaInstructions = selectedPersona ? selectedPersona.instructions : undefined;
 
       const selectedClient = clients.find(c => c.id === selectedClientId);
       const clientContext = selectedClient ? `Client Profile: Name: ${selectedClient.client_name}, Age: ${selectedClient.client_data.age}, Goal: ${selectedClient.client_data.goal}, Notes: ${selectedClient.client_data.notes}` : '';
 
-      // FIX: Construct the final prompt for the AI to use
+     
       const finalPromptForAI = `${personaInstructions ? personaInstructions + ' ' : ''}${clientContext}\n${promptText}`;
 
-      console.log('💬 Prompt sent to Groq:',  finalPromptForAI);
+     
       const response = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -683,7 +675,7 @@ const executeDelete = useCallback(async () => {
 
       const result = await response.json();
       const reply = result?.reply || 'No AI reply returned from Groq';
-      console.log('Groq Reply:', reply);
+      
 
       const { error: updateError } = await supabase
         .from('responses')
@@ -760,7 +752,7 @@ const executeDelete = useCallback(async () => {
       <header className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Your Prompts</h1>
             <div className="flex items-center space-x-4">
-        {/* The new "Your Activity" button */}
+       
         <Link href="/dashboard/activity" passHref>
           <button
             className="px-4 py-2.5 bg-mint-palette-200 text-mint-palette-700 font-semibold rounded-full shadow-md hover:bg-mint-palette-300 transition-all duration-300 transform hover:-translate-y-0.5"
@@ -818,9 +810,9 @@ const executeDelete = useCallback(async () => {
             />
           </div>
           
-          {/* Aligned Persona Selection and Category Selection */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 col-span-full"> {/* Use col-span-full to make it a full-width row */}
-            {/* Persona Selection Dropdown */}
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 col-span-full"> 
+           
             <div>
               <label htmlFor="persona-select" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Select AI Persona (Optional)
@@ -840,7 +832,7 @@ const executeDelete = useCallback(async () => {
               </select>
             </div>
 
-            {/* NEW: Client Selection Dropdown */}
+         
             <div>
               <label htmlFor="client-select" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Select Client Profile (Optional)
@@ -860,7 +852,7 @@ const executeDelete = useCallback(async () => {
               </select>
             </div>
 
-            {/* Category Selection Dropdown */}
+         
             <div>
               <label htmlFor="category-select" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                Category
@@ -878,12 +870,12 @@ const executeDelete = useCallback(async () => {
               </select>
             </div>
           </div>
-          {/* END Aligned Persona Selection and Category Selection */}
-        </div> {/* End of grid for prompt/persona/category */}
+          
+        </div> 
 
-        {/* Original row for Save Prompt Button and Search/Bookmark Filter */}
+       
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
-          {/* Save Prompt Button */}
+         
           <div>
             <button
               onClick={handleSavePrompt}
@@ -894,7 +886,7 @@ const executeDelete = useCallback(async () => {
             </button>
           </div>
           
-          {/* Search Input and Bookmark Checkbox */}
+         
           <div className="flex flex-col sm:flex-row gap-4 items-center md:justify-end">
             <div className="relative flex-1 w-full sm:w-auto">
               <input
@@ -922,7 +914,7 @@ const executeDelete = useCallback(async () => {
           </div> 
       </section>
 
-      {/* Tag Filter (Categories) */}
+   
      <div className="flex flex-wrap gap-2 mb-6 p-4 rounded-lg bg-emerald-50 dark:bg-emerald-900 border border-emerald-200 dark:border-emerald-700 shadow-sm">
   {allCategories.map((cat) => (
     <button
@@ -939,7 +931,7 @@ const executeDelete = useCallback(async () => {
   ))}
 </div>
 
-      {/* Saved Prompts List */}
+     
       <div className="scroll-container-y grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-8">
         {loading && savedPrompts.length === 0 ? (
           <p className="col-span-full text-center text-gray-600 dark:text-gray-400 text-lg py-10">Loading prompts...</p>
@@ -950,16 +942,16 @@ const executeDelete = useCallback(async () => {
             <DashboardResponseCard
               key={p.id}
               id={p.id}
-              promptInput={p.promptInput} // This is the substituted prompt text
+              promptInput={p.promptInput} 
               aiResponse={p.aiResponse}
               category={p.category}
               subCategory={p.subCategory}
               timestamp={p.timestamp}
-              onDelete={confirmDelete} // Pass confirmDelete
-              onGenerateReply={(id, promptText) => handleGenerateReply(id, promptText, p.category)} // Pass category here
-              onToggleBookmark={handleToggleBookmark} // Pass handleToggleBookmark
-              isGenerating={generatingReplyId === p.id} // Pass generating status
-              isBookmarked={p.favorite} // Pass bookmark status
+              onDelete={confirmDelete} 
+              onGenerateReply={(id, promptText) => handleGenerateReply(id, promptText, p.category)} 
+              onToggleBookmark={handleToggleBookmark} 
+              isGenerating={generatingReplyId === p.id} 
+              isBookmarked={p.favorite} 
             />
           ))
         )}
@@ -979,12 +971,10 @@ const executeDelete = useCallback(async () => {
         </AlertDialogContent>
       </AlertDialog>
 
-      {/* Template Variables Modal */}
       <TemplateVariablesModal
         isOpen={showTemplateVariablesModal}
         onClose={() => setShowTemplateVariablesModal(false)}
         variables={templateVariables}
-        // FIX: Pass the clientId as the fourth argument
         onSaveAndGenerate={(vars, clientId) => handleSaveAndGenerateForTemplate(currentTemplatePromptText, currentTemplateCategory, vars, clientId)}
         templateText={currentTemplatePromptText}
         category={currentTemplateCategory}

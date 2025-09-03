@@ -1,72 +1,90 @@
 // src/app/dashboard/components/DashboardSidebar.tsx
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import ThemeToggle from '@/components/ThemeToggle'; // adjust path if needed
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
+  LayoutDashboard,
+  Dumbbell,
+  Users,
+  Megaphone,
+  Heart,
+  GraduationCap,
+  Clock,
+  ShoppingCart,
+  PenTool,
+  DollarSign,
+  FileText,
+  Bookmark,
+} from "lucide-react";
+
 const categories = [
-{ label: 'Dashboard', path: '/dashboard' },
-  { label: 'Fitness', path: '/dashboard/fitness' },
-  { label: 'HR', path: '/dashboard/hr' },
-  { label: 'Marketing', path: '/dashboard/marketing' },
-  { label: 'Therapy', path: '/dashboard/therapy' },
-  { label: 'Education', path: '/dashboard/education' },
-  { label: 'Productivity', path: '/dashboard/productivity' },
-  { label: 'Sales', path: '/dashboard/sales' },
-  { label: 'Creative Writing', path: '/dashboard/creative-writing' },
-  { label: 'Finance', path: '/dashboard/finance' },
+  { label: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
+  { label: "Fitness", path: "/dashboard/fitness", icon: Dumbbell },
+  { label: "HR", path: "/dashboard/hr", icon: Users },
+  { label: "Marketing", path: "/dashboard/marketing", icon: Megaphone },
+  { label: "Therapy", path: "/dashboard/therapy", icon: Heart },
+  { label: "Education", path: "/dashboard/education", icon: GraduationCap },
+  { label: "Productivity", path: "/dashboard/productivity", icon: Clock },
+  { label: "Sales", path: "/dashboard/sales", icon: ShoppingCart },
+  { label: "Creative Writing", path: "/dashboard/creative-writing", icon: PenTool },
+  { label: "Finance", path: "/dashboard/finance", icon: DollarSign },
 ];
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardSidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="flex">
-      {/* Sidebar */}
-      <aside className="fixed top-0 left-0 h-full w-64 bg-gradient-to-b from-emerald-900 to-emerald-700 text-white shadow-lg flex flex-col">
-         <div className="p-4 text-2xl font-bold">PromptMagic</div>
-        <nav className="flex-1 space-y-2 p-4">
-          {categories.map((cat) => (
-            <Link
-              key={cat.path}
-              href={cat.path}
-              className={`block rounded-lg px-3 py-2 transition ${
-                pathname === cat.path
-                  ? 'bg-emerald-600 text-white'
-                  : 'text-gray-200 hover:bg-emerald-800'
-              }`}
-            >
-              {cat.label}
-            </Link>
-            
-          ))}
-          <Link
-           href="/templates" 
-            className={`block rounded-lg px-3 py-2 transition
-              ${pathname === '/templates'
-                ?  'bg-emerald-600 text-white'
-                  : 'text-gray-200 hover:bg-emerald-800'
-              }`}
-          >
-            Templates
-          </Link>
-         
-          <Link
-            href="/dashboard/saved-prompts"
-            className={`block rounded-lg px-3 py-2 transition
-              ${pathname === '/dashboard/saved-prompts'
-                ?  'bg-emerald-600 text-white'
-                  : 'text-gray-200 hover:bg-emerald-800'
-              }`}
-          >
-            Saved Prompts
-          </Link>
-        </nav>
-        
-      </aside>
+    <aside className="fixed top-0 left-0 h-full w-64 bg-gradient-to-b from-emerald-900 to-emerald-700 text-white shadow-lg flex flex-col">
+      {/* Logo / Brand */}
+      <div className="flex items-center gap-2 p-4 text-2xl font-bold">
+        <LayoutDashboard className="w-7 h-7 text-emerald-300" />
+        PromptMagic
+      </div>
 
-      {/* Main Content */}
-      <main className="flex-1 ml-64 p-1 overflow-y-auto">{children}</main>
-    </div>
+      {/* Navigation */}
+      <nav className="flex-1 space-y-2 p-4">
+        {categories.map(({ label, path, icon: Icon }) => (
+          <Link
+            key={path}
+            href={path}
+            className={`flex items-center gap-3 rounded-lg px-3 py-2 transition ${
+              pathname === path
+                ? "bg-emerald-600 text-white"
+                : "text-gray-200 hover:bg-emerald-800"
+            }`}
+          >
+            <Icon className="w-5 h-5" />
+            <span>{label}</span>
+          </Link>
+        ))}
+
+        {/* Templates */}
+        <Link
+          href="/templates"
+          className={`flex items-center gap-3 rounded-lg px-3 py-2 transition ${
+            pathname === "/templates"
+              ? "bg-emerald-600 text-white"
+              : "text-gray-200 hover:bg-emerald-800"
+          }`}
+        >
+          <FileText className="w-5 h-5" />
+          <span>Templates</span>
+        </Link>
+
+        {/* Saved Prompts */}
+        <Link
+          href="/dashboard/saved-prompts"
+          className={`flex items-center gap-3 rounded-lg px-3 py-2 transition ${
+            pathname === "/dashboard/saved-prompts"
+              ? "bg-emerald-600 text-white"
+              : "text-gray-200 hover:bg-emerald-800"
+          }`}
+        >
+          <Bookmark className="w-5 h-5" />
+          <span>Saved Prompts</span>
+        </Link>
+      </nav>
+    </aside>
   );
 }

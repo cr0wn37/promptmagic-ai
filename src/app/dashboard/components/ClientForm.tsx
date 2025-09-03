@@ -38,7 +38,7 @@
             if (initialData) {
                 setClientName(initialData.client_name);
                 setClientData(initialData.client_data);
-                // Infer client type from existing data
+               
                 const keys = Object.keys(initialData.client_data);
                 for (const type of Object.keys(clientFieldsMap)) {
                     if (keys.some(key => clientFieldsMap[type].includes(key))) {
@@ -88,7 +88,7 @@
                         value={clientType}
                         onChange={e => {
                             setClientType(e.target.value);
-                            setClientData({}); // Reset data when type changes
+                            setClientData({}); 
                         }}
                         className="col-span-3 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-mint-palette-400 transition-all border-gray-300"
                     >

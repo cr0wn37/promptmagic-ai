@@ -4,12 +4,12 @@ import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
-import { PostgrestError } from '@supabase/supabase-js'; // Import PostgrestError for type safety
+import { PostgrestError } from '@supabase/supabase-js'; 
 
-import PersonaManagement from '../components/PersonaManagement'; // Client component for UI
+import PersonaManagement from '../components/PersonaManagement'; 
 import Link from 'next/link';
 
-// Define types for fetched persona data
+
 interface Persona {
   id: string;
   user_id: string;
@@ -33,7 +33,7 @@ export default async function PersonasPage() {
 
   const userId = user.id;
 
-  // Server Action for adding a persona
+  
   const addPersona = async (name: string, instructions: string) => {
     'use server';
     const supabaseServer = createServerComponentClient({ cookies: () => cookies() });
@@ -53,12 +53,12 @@ export default async function PersonasPage() {
       console.error('Error adding persona:', error);
       return { success: false, message: error.message || "Failed to add persona." };
     } else {
-      revalidatePath('/dashboard/personas'); // Revalidate to show new persona
+      revalidatePath('/dashboard/personas');
       return { success: true, message: "Persona added successfully." };
     }
   };
 
-  // Server Action for updating a persona
+ 
   const updatePersona = async (id: string, name: string, instructions: string) => {
     'use server';
     const supabaseServer = createServerComponentClient({ cookies: () => cookies() });
@@ -72,7 +72,7 @@ export default async function PersonasPage() {
       .from('personas')
       .update({ name, instructions })
       .eq('id', id)
-      .eq('user_id', userId) // Ensure user owns the persona
+      .eq('user_id', userId) 
       .select()
       .single();
 
@@ -80,12 +80,11 @@ export default async function PersonasPage() {
       console.error('Error updating persona:', error);
       return { success: false, message: error.message || "Failed to update persona." };
     } else {
-      revalidatePath('/dashboard/personas'); // Revalidate to show updated persona
+      revalidatePath('/dashboard/personas'); 
       return { success: true, message: "Persona updated successfully." };
     }
   };
 
-  // Server Action for deleting a persona
   const deletePersona = async (id: string) => {
     'use server';
     const supabaseServer = createServerComponentClient({ cookies: () => cookies() });
@@ -99,18 +98,18 @@ export default async function PersonasPage() {
       .from('personas')
       .delete()
       .eq('id', id)
-      .eq('user_id', userId); // Ensure user owns the persona
+      .eq('user_id', userId);
 
     if (error) {
       console.error('Error deleting persona:', error);
       return { success: false, message: error.message || "Failed to delete persona." };
     } else {
-      revalidatePath('/dashboard/personas'); // Revalidate to show changes
+      revalidatePath('/dashboard/personas'); 
       return { success: true, message: "Persona deleted successfully." };
     }
   };
 
-  // Fetch initial personas for the user
+  
   const { data: initialPersonas, error: fetchError } = await supabase
     .from('personas')
     .select('*')

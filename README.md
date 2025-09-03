@@ -38,4 +38,23 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 =======
 # promptmagic-ai
 PromptMagic AI – An AI-powered workspace for niche professionals to organize, run, and save prompts.  Built with Next.js, Tailwind CSS, Supabase, and Groq/OpenAI APIs, it enables users to generate AI responses,  categorize prompts, and maintain a personalized dashboard for productivity.
+## Features
+
+- Intuitive Prompt Creation  
+  Craft new prompts or modify existing ones with a user-friendly interface, ensuring precise AI input.
+
+- Custom AI Personas  
+  Define and save unique AI personas to tailor tone, style, and expertise for consistent, branded output.
+
+- Extensive Template Library  
+  Access and utilize a rich library of pre-built prompts for various domains, accelerating your content creation.
+
+- Effortless Client Integration  
+  Save client profiles and auto-fill prompt variables. The AI uses this rich context to provide personalized responses, saving you time.
+
+- Personalized Dashboard  
+  Gain insights into your prompt generation habits and most used categories with clear analytics.
+
+- Secure & Reliable  
+  Built on a robust, secure infrastructure with reliable data handling, ensuring your prompts and data are always safe.
 >>>>>>> 39b925a1c8ddd0e6ab1b47792e2c7422bfd4b8bd

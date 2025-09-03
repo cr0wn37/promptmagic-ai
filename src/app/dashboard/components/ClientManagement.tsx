@@ -120,7 +120,7 @@ const ClientManagement: React.FC<ClientManagementProps> = ({ initialClients, onA
         <h2 className="text-2xl font-bold text-gray-900">Your Client Profiles</h2>
         <button
           onClick={handleAddClick}
-          className="px-4 py-2.5 bg-mint-palette-500 text-white font-semibold rounded-lg shadow-md hover:bg-mint-palette-600 transition-all duration-300 transform hover:-translate-y-0.5"
+          className="px-4 py-2.5 bg-emerald-700 text-white font-semibold rounded-lg shadow-md hover:bg-emerald-800 transition-all duration-300 transform hover:-translate-y-0.5"
           disabled={loading}
         >
           Add New Client

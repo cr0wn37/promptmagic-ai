@@ -100,7 +100,7 @@ const SavedPromptsDashboard: React.FC<SavedPromptsDashboardProps> = ({ userId, i
       matchesDate = promptDate >= thirtyDaysAgo;
     }
     
-    // REMOVED: Bookmark filter logic
+    
     return matchesSearch && matchesCategory && matchesDate;
   });
 
@@ -350,7 +350,7 @@ const SavedPromptsDashboard: React.FC<SavedPromptsDashboardProps> = ({ userId, i
                 onChange={(e) => setEditPromptText(e.target.value)}
                 className="col-span-3 p-2 border border-mint-palette-300 dark:border-mint-palette-600 rounded-md bg-mint-palette-100 dark:bg-mint-palette-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-mint-palette-400"
                 rows={4}
-                readOnly // Make this field read-only
+                readOnly 
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">

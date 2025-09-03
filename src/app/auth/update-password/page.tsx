@@ -145,7 +145,7 @@ const UpdatePasswordPage: React.FC = () => {
         {/* Right Section: Gradient Background with Text */}
         <div className="hidden md:flex w-1/2 items-center justify-center p-8 sm:p-12 lg:p-16 bg-gradient-to-br from-mint-palette-200 to-mint-palette-400 text-mint-palette-800 text-center flex-col">
           <h2 className="text-4xl font-extrabold leading-tight mb-4 drop-shadow-lg">
-            MicroPrompt AI
+            PromptMagic AI
           </h2>
           <p className="text-lg leading-relaxed opacity-90 max-w-md">
             Unleash tailored, persona-driven AI content. Get clean, actionable responses for every niche.
