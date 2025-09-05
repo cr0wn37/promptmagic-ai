@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
+import Image from "next/image";
+export const runtime = "nodejs";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -149,15 +151,26 @@ const LoginPage: React.FC = () => {
         </div>
 
        
-        <div className="hidden md:flex w-1/2 items-center justify-center p-8 sm:p-12 lg:p-16 bg-gradient-to-br from-mint-palette-200 to-mint-palette-400 text-mint-palette-800 text-center flex-col"> 
-          <h2 className="text-4xl font-extrabold leading-tight mb-4 drop-shadow-lg">
-            PromptMagic AI
-          </h2>
-          <p className="text-lg leading-relaxed opacity-90 max-w-md">
-            Unleash tailored, persona-driven AI content. Get clean, actionable responses for every niche.
-          </p>
-        </div>
-      </div>
+         <div className="hidden md:flex w-1/2 items-center justify-center p-8 sm:p-12 lg:p-16 bg-gradient-to-br from-mint-palette-200 to-mint-palette-400 text-mint-palette-800 text-center flex-col rounded-r-2xl shadow-lg">
+        
+                           <div className="mb-6 drop-shadow-lg">
+            <Image 
+              src="/logo-icon.png" 
+              alt="PromptMagic Logo" 
+              width={80} 
+              height={80} 
+              priority 
+            />
+          </div>
+        
+                  <h2 className="text-4xl font-extrabold leading-tight mb-4 drop-shadow-lg">
+                    PromptMagic AI
+                  </h2>
+                  <p className="text-lg leading-relaxed opacity-90 max-w-md">
+                    Unleash tailored, persona-driven AI content. Get clean, actionable responses for every niche.
+                  </p>
+                </div>
+              </div>
 
      
       <style jsx>{`

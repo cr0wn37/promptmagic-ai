@@ -3,6 +3,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 import {
   LayoutDashboard,
   Dumbbell,
@@ -38,7 +39,13 @@ export default function DashboardSidebar() {
     <aside className="fixed top-0 left-0 h-full w-64 bg-gradient-to-b from-emerald-900 to-emerald-700 text-white shadow-lg flex flex-col">
       {/* Logo / Brand */}
       <div className="flex items-center gap-2 p-4 text-2xl font-bold">
-        <LayoutDashboard className="w-7 h-7 text-emerald-300" />
+         <Image
+    src="/logo-icon.png"   // <-- place your kingfisher icon in /public
+    alt="PromptMagic Logo"
+    width={28}             // tweak size to match text
+    height={28}
+    className="drop-shadow-sm"
+  />
         PromptMagic
       </div>
 

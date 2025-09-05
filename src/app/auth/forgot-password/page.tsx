@@ -6,6 +6,9 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 const ForgotPasswordPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
@@ -45,9 +48,9 @@ const ForgotPasswordPage: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-mint-palette-50 to-mint-palette-100 p-4">
-      {/* Central Card Container */}
+     
       <div className="relative w-full max-w-4xl mx-auto flex rounded-3xl shadow-2xl overflow-hidden bg-white my-8">
-        {/* Left Section: Form */}
+       
         <div className="w-full md:w-1/2 flex items-center justify-center p-6 sm:p-8 lg:p-10 text-gray-900">
           <div className="w-full max-w-xs space-y-6 animate-fade-in-up">
             <div className="text-center md:text-left">
@@ -91,7 +94,7 @@ const ForgotPasswordPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Section: Gradient Background with Text */}
+       
         <div className="hidden md:flex w-1/2 items-center justify-center p-8 sm:p-12 lg:p-16 bg-gradient-to-br from-mint-palette-200 to-mint-palette-400 text-mint-palette-800 text-center flex-col">
           <h2 className="text-4xl font-extrabold leading-tight mb-4 drop-shadow-lg">
             PromptMagic AI
@@ -102,7 +105,7 @@ const ForgotPasswordPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Tailwind CSS Animations */}
+    
       <style jsx>{`
         @keyframes fadeInFromBottom {
           0% { opacity: 0; transform: translateY(20px); }

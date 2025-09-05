@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
+import Image from "next/image";
 
 const SignupPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -15,7 +16,7 @@ const SignupPage: React.FC = () => {
   const supabase = createClientComponentClient();
   const { toast } = useToast();
 
-  // Redirect if already logged in
+ 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
@@ -85,9 +86,9 @@ const SignupPage: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-mint-palette-50 to-mint-palette-100 p-4">
-      {/* Central Card Container */}
+     
       <div className="relative w-full max-w-4xl mx-auto flex rounded-3xl shadow-2xl overflow-hidden bg-white my-8">
-        {/* Left Section: Form */}
+        
         <div className="w-full md:w-1/2 flex items-center justify-center p-6 sm:p-8 lg:p-10 text-gray-900">
           <div className="w-full max-w-xs space-y-6 animate-fade-in-up">
             <div className="text-center md:text-left">
@@ -95,7 +96,7 @@ const SignupPage: React.FC = () => {
               <p className="text-gray-600 text-base">Create your account to get started.</p>
             </div>
 
-            {/* Google Signup Button */}
+            
             <button
               onClick={handleGoogleSignup}
               disabled={loading}
@@ -170,8 +171,19 @@ const SignupPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Section: Gradient Background with Text */}
-        <div className="hidden md:flex w-1/2 items-center justify-center p-8 sm:p-12 lg:p-16 bg-gradient-to-br from-mint-palette-200 to-mint-palette-400 text-mint-palette-800 text-center flex-col">
+        
+        <div className="hidden md:flex w-1/2 items-center justify-center p-8 sm:p-12 lg:p-16 bg-gradient-to-br from-mint-palette-200 to-mint-palette-400 text-mint-palette-800 text-center flex-col rounded-r-2xl shadow-lg">
+
+                   <div className="mb-6 drop-shadow-lg">
+    <Image 
+      src="/logo-icon.png" 
+      alt="PromptMagic Logo" 
+      width={80} 
+      height={80} 
+      priority 
+    />
+  </div>
+
           <h2 className="text-4xl font-extrabold leading-tight mb-4 drop-shadow-lg">
             PromptMagic AI
           </h2>
@@ -181,7 +193,7 @@ const SignupPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Tailwind CSS Animations */}
+     
       <style jsx>{`
         @keyframes fadeInFromBottom {
           0% { opacity: 0; transform: translateY(20px); }
