@@ -1,13 +1,13 @@
 {
   "functions": {
     "api/**/*.js": {
-      "runtime": "@vercel/node"
+      "runtime": "nodejs18.x"
     },
     "api/**/*.ts": {
-      "runtime": "@vercel/node"
+      "runtime": "nodejs18.x"
     },
     "api/**/*.tsx": {
-      "runtime": "@vercel/node"
+      "runtime": "nodejs18.x"
     }
   }
 }
