@@ -7,10 +7,10 @@ import { redirect } from 'next/navigation';
 import DashboardSidebar from './components/DashBoardSidebar'; 
 
 export const metadata = {
-  title: 'Dashboard | MicroPrompt AI',
-  description: 'Your AI-Powered Prompt Workspace Dashboard',
+   title: "PromptMagic",
+ description:
+    "Organize, run, and save AI prompts with ease. Designed for professionals in fitness, HR, education, marketing, and more.",
 };
-
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const supabase = createServerComponentClient({ cookies: () => cookies() });
   const { data: { user } = {} } = await supabase.auth.getUser();

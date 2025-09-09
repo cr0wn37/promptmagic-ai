@@ -8,8 +8,9 @@ import { Toaster } from '@/components/ui/toaster';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'MicroPrompt AI',
-  description: 'Your AI-Powered Prompt Workspace',
+   title: "PromptMagic",
+ description:
+    "Organize, run, and save AI prompts with ease. Designed for professionals in fitness, HR, education, marketing, and more.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
