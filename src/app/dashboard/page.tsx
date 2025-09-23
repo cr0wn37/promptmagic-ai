@@ -679,7 +679,7 @@ const executeDelete = useCallback(async () => {
       
       toast({
         title: "No credits left!",
-        description: "Upgrade to pro for  ore credits!",
+        description: "Upgrade to pro for more credits!",
         variant: "destructive",
       });
     } else {
