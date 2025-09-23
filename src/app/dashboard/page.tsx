@@ -673,7 +673,31 @@ const executeDelete = useCallback(async () => {
           personaInstructions: personaInstructions }),
       });
 
-     
+      if (!response.ok) {
+    const errorData = await response.json();
+    if (response.status === 403) {
+      
+      toast({
+        title: "No credits left!",
+        description: "Upgrade to pro for  ore credits!",
+        variant: "destructive",
+      });
+    } else {
+      
+      toast({
+        title: "Error generating reply",
+        description: errorData.error || "An unexpected error occurred.",
+        variant: "destructive",
+      });
+    }
+
+    // Set loading to false and return early to stop further execution
+    setSavedPrompts((prev) =>
+      prev.map((p) => (p.id === responseId ? { ...p, loading: false, aiResponse: 'Failed to generate reply.' } : p))
+    );
+    setGeneratingReplyId(null);
+    return; // Exit the function here
+}
 
       const result = await response.json();
       const reply = result?.reply || 'No AI reply returned from Groq';
