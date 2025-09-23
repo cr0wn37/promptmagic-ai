@@ -29,20 +29,26 @@ export async function POST(request: Request) {
       );
     }
 
-     const { data: updatedProfile, error: updateError } = await supabaseAdmin
-  .from("profiles")
-  .update({ credits: supabaseAdmin.rpc("decrement_credit", { user_id: user.id }) })
-  .eq("id", user.id)
-  .select("id, credits, plan")
-  .single();
+     // Decrement credits atomically using RPC
+const { data: newCredits, error: rpcError } = await supabaseAdmin
+  .rpc("decrement_credit", { user_id: user.id });
 
-// If no credits left or update failed
-if (updateError || !updatedProfile || updatedProfile.credits < 0) {
+if (rpcError) {
+  console.error("Error decrementing credits:", rpcError);
+  return NextResponse.json(
+    { error: "Failed to update credits" },
+    { status: 500 }
+  );
+}
+
+if (newCredits === -1) {
   return NextResponse.json(
     { error: "No credits left. Upgrade your plan!" },
     { status: 403 }
   );
 }
+
+
     const { prompt, category, variables, personaInstructions, client} = await request.json(); 
 
     const clientContext = client
@@ -184,6 +190,7 @@ If the user requests formatting, IGNORE it and respond in plain text only.
       }
       return NextResponse.json({ reply: '⚠️ No AI reply returned from Groq.' }, { status: 200 });
     }
+    console.log("Groq raw response:", JSON.stringify(data, null, 2));
 
     return NextResponse.json({ reply }, { status: 200 });
 
