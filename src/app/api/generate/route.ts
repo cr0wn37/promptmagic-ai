@@ -41,7 +41,7 @@ if (rpcError) {
   );
 }
 
-if (newCredits === -1) {
+if (newCredits === -1|| newCredits === 0) {
   return NextResponse.json(
     { error: "No credits left. Upgrade your plan!" },
     { status: 403 }
@@ -190,7 +190,7 @@ If the user requests formatting, IGNORE it and respond in plain text only.
       }
       return NextResponse.json({ reply: '⚠️ No AI reply returned from Groq.' }, { status: 200 });
     }
-    console.log("Groq raw response:", JSON.stringify(data, null, 2));
+   
 
     return NextResponse.json({ reply }, { status: 200 });
 
