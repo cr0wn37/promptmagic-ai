@@ -1,13 +1,48 @@
 // src/app/api/generate/route.ts
 
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
+
 
 export const runtime = "nodejs";
 
 
 export async function POST(request: Request) {
   try {
-    
+
+     const supabase = createRouteHandlerClient({ cookies });
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json(
+        { error: "Unauthorized. Please log in." },
+        { status: 401 }
+      );
+    }
+
+     const { data: updatedProfile, error: updateError } = await supabaseAdmin
+  .from("profiles")
+  .update({ credits: supabaseAdmin.rpc("decrement_credit", { user_id: user.id }) })
+  .eq("id", user.id)
+  .select("id, credits, plan")
+  .single();
+
+// If no credits left or update failed
+if (updateError || !updatedProfile || updatedProfile.credits < 0) {
+  return NextResponse.json(
+    { error: "No credits left. Upgrade your plan!" },
+    { status: 403 }
+  );
+}
     const { prompt, category, variables, personaInstructions, client} = await request.json(); 
 
     const clientContext = client

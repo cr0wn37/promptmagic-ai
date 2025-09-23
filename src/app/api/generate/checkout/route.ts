@@ -1,0 +1,51 @@
+import { NextResponse } from "next/server";
+
+export async function POST(req: Request) {
+  const { email,userId, variantId } = await req.json();
+
+  try {
+    const response = await fetch("https://api.lemonsqueezy.com/v1/checkouts", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.LEMONSQUEEZY_API_KEY}`,
+        "Content-Type": "application/vnd.api+json",
+        Accept: "application/vnd.api+json",
+      },
+      body: JSON.stringify({
+        data: {
+          type: "checkouts",
+          attributes: {
+            checkout_data: {
+              email: email || undefined,
+                custom: { user_id: userId } ,
+            },
+          },
+          relationships: {
+            store: {
+              data: { type: "stores", id: process.env.LEMONSQUEEZY_STORE_ID },
+            },
+            variant: {
+              data: {
+                type: "variants",
+                id: variantId || process.env.LEMONSQUEEZY_VARIANT_ID,
+              },
+            },
+          },
+        },
+      }),
+    });
+
+    if (!response.ok) {
+      const err = await response.text();
+      throw new Error(err);
+    }
+
+    const data = await response.json();
+    const checkoutUrl = data.data.attributes.url;
+
+    return NextResponse.json({ url: checkoutUrl });
+  } catch (error: any) {
+    console.error("Checkout error:", error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}

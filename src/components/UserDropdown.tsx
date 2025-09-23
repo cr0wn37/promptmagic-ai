@@ -8,6 +8,8 @@ import Link from 'next/link';
 
 import { AuthChangeEvent, Session, User } from '@supabase/supabase-js';
 import ThemeToggle from '@/components/ThemeToggle'; 
+import { supabase } from "@/utils/supabase/client";
+
 
 interface UserDropdownProps {
   onLogout: () => void;
@@ -18,9 +20,10 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ onLogout }) => {
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const supabase = createClientComponentClient();
   const { toast } = useToast();
+  
 
   useEffect(() => {
-    // Fetch user profile on component mount
+   
     const fetchUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
@@ -41,6 +44,30 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ onLogout }) => {
     };
   }, []);
 
+   const [credits, setCredits] = useState<number | null>(null);
+
+  useEffect(() => {
+    const fetchCredits = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user) {
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("credits")
+          .eq("id", user.id) // or `.eq("email", user.email)` if your webhook updates by email
+          .single();
+
+        if (!error && data) {
+          setCredits(data.credits);
+        }
+      }
+    };
+
+    fetchCredits();
+  }, []);
+
 
 
   const handleLogout = useCallback(() => {
@@ -48,7 +75,7 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ onLogout }) => {
     setIsOpen(false);
   }, [onLogout]);
 
-  // Handle outside click to close dropdown
+  
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       if (isOpen && event.target && !(event.target as HTMLElement).closest('.user-dropdown-container')) {
@@ -87,8 +114,14 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ onLogout }) => {
             <div className="px-4 py-2 border-b border-gray-700 text-gray-200 font-semibold text-lg">
               {userEmail || 'User'}
             </div>
+
+             <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
+      {credits !== null ? `Credits: ${credits}` : "Loading..."}
+    </span>
+  );
+
             
-            {/* THIS IS WHERE YOU WILL ADD YOUR THEME TOGGLE BUTTON */}
+            
             <div className="px-4 py-2">
               <button 
                 

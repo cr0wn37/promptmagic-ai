@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react"; 
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -15,7 +15,6 @@ export default function LandingPage() {
       {/* Content */}
       <div className="relative z-10 flex flex-col min-h-screen">
         <section className="flex-1 flex flex-col justify-center px-8 py-28 text-center transform translate-y-20">
-          
           {/* Logo */}
           <div className="mx-auto mb-6">
             <Image
@@ -38,8 +37,8 @@ export default function LandingPage() {
 
           {/* Subtext */}
           <p className="text-lg text-gray-900 dark:text-gray-100 mb-10 max-w-2xl mx-auto 
-                         rounded-xl bg-white/20 dark:bg-black/30 backdrop-blur-md 
-                         border border-white/30 shadow-md p-4">
+                       rounded-xl bg-white/20 dark:bg-black/30 backdrop-blur-md 
+                       border border-white/30 shadow-md p-4">
             Clean, consistent, and tailored to your clients — every single time. <br />
             Save time, boost productivity, and scale your expertise.
           </p>
@@ -55,6 +54,17 @@ export default function LandingPage() {
             Start Free <ArrowRight className="ml-2 w-5 h-5" />
           </Link>
         </section>
+
+        {/* Dashboard Image Section */}
+        <div className="w-full mt-10 px-4 md:px-8 lg:px-16">
+          <Image
+            src="/dashboard-preview.png" // Update this path to your image
+            alt="Dashboard Preview"
+            width={1200}
+            height={800}
+             className="rounded-lg shadow-xl mx-auto w-full max-w-6xl border-2 border-black"
+          />
+        </div>
       </div>
     </div>
   );

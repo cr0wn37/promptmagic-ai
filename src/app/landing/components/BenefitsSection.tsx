@@ -16,8 +16,8 @@ export default function BenefitsSection() {
     {
       icon: <Clock className="w-8 h-8 text-emerald-400" />,
       title: "Save Time Instantly",
-      desc: "Get high-quality AI responses in seconds instead of hours of manual work.",
-    },
+      desc: "Generate high-quality AI content in seconds, eliminating hours of manual, repetitive tasks.",
+  },
     {
       icon: <Users className="w-8 h-8 text-emerald-400" />,
       title: "Handle Multiple Clients",
@@ -46,14 +46,14 @@ export default function BenefitsSection() {
     {
       icon: <BarChart className="w-8 h-8 text-emerald-400" />,
       title: "Boost Productivity",
-      desc: "Focus on strategy and client growth while AI handles repetitive tasks.",
-    },
+      desc: "Free up your time from grunt work to focus on high-value strategy and client growth.",
+  },
     {
       icon: <FolderKanban className="w-8 h-8 text-emerald-400" />,
-      title: "Organized Prompt Library",
-      desc: "Save, tag, and reuse prompts with a clean and structured dashboard.",
-    },
-  ];
+      title: "Organize & Reuse Prompts",
+    desc: "Save, tag, and instantly access a clean, structured library of your most effective prompts.",
+  },
+];
 
   return (
   <section
