@@ -6,6 +6,7 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
 import Image from "next/image";
+export const runtime = "nodejs";
 
 const SignupPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -39,7 +40,7 @@ const SignupPage: React.FC = () => {
       return;
     }
 
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -48,19 +49,38 @@ const SignupPage: React.FC = () => {
     });
 
     if (error) {
-      console.error('Signup error:', error);
-      toast({
-        title: "Signup Failed",
-        description: error.message,
-        variant: "destructive",
-      });
-    } else {
-      toast({
-        title: "Account Created!",
-        description: "Please check your email to confirm your account.",
-        variant: "default",
-      });
+  console.error('Signup error:', error);
+  toast({
+    title: "Signup Failed",
+    description: error.message,
+    variant: "destructive",
+  });
+} else {
+  // 👇 Insert profile with 7-day trial
+   if (data?.user) {
+    const { error: insertError } = await supabase.from("profiles").insert([
+      {
+        id: data.user.id,
+        email: data.user.email,
+        plan: "trial",
+        credits: 4, // daily reset handled by SQL or cron
+        trial_start: new Date().toISOString(),
+        trial_ends_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+      },
+    ]);
+
+    if (insertError) {
+      console.error("Error inserting trial profile:", insertError);
     }
+  }
+
+  toast({
+    title: "Account Created!",
+    description: "Please check your email to confirm your account.",
+    variant: "default",
+  });
+}
+
     setLoading(false);
   };
 

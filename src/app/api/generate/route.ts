@@ -29,6 +29,33 @@ export async function POST(request: Request) {
       );
     }
 
+     // 👇 Fetch the user's profile
+    const { data: profile, error: profileError } = await supabaseAdmin
+      .from("profiles")
+      .select("plan, trial_ends_at, credits")
+      .eq("id", user.id)
+      .single();
+
+    if (profileError || !profile) {
+      console.error("Error fetching profile:", profileError);
+      return NextResponse.json(
+        { error: "Profile not found" },
+        { status: 404 }
+      );
+    }
+
+    // 👇 Trial expiration check (before decrementing credits)
+    if (
+      profile.plan === "trial" &&
+      profile.trial_ends_at &&
+      new Date() > new Date(profile.trial_ends_at)
+    ) {
+      return NextResponse.json(
+        { reply: "❌ Your 7-day free trial has expired. Upgrade to continue." },
+        { status: 403 }
+      );
+    }
+
      // Decrement credits atomically using RPC
 const { data: newCredits, error: rpcError } = await supabaseAdmin
   .rpc("decrement_credit", { user_id: user.id });

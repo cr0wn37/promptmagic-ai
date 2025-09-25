@@ -39,50 +39,73 @@ export async function POST(req: Request) {
   case "subscription_updated": {
     const customerEmail = event.data?.attributes?.user_email;
     const subscriptionStatus = event.data?.attributes?.status;
+    const variantId = event.data?.attributes?.variant_id;
 
     if (customerEmail && subscriptionStatus) {
       if (subscriptionStatus === "active" || subscriptionStatus === "on_trial") {
-        await supabase
-          .from("profiles")
-          .update({
-            plan: "pro",
-            credits: 1000,
-            last_credit_reset: new Date().toISOString(),
-          })
-          .eq("email", customerEmail);
-      } else if (
-        subscriptionStatus === "cancelled" ||
-        subscriptionStatus === "expired" ||
-        subscriptionStatus === "unpaid"
-      ) {
-        await supabase
-          .from("profiles")
-          .update({
-            plan: "free",
-            credits: 4,
-            last_credit_reset: new Date().toISOString(),
-          })
-          .eq("email", customerEmail);
+          let plan = "pro";
+      let credits = 1000; // default for pro
+
+      // 👇 adjust based on variant
+      if (variantId === parseInt(process.env.LS_VARIANT_WEEKLY_ID!)) {
+        plan = "weekly";
+        credits = 250;
+      } else if (variantId === parseInt(process.env.LEMONSQUEEZY_VARIANT_ID!)) {
+        plan = "pro";
+        credits = 1000;
       }
+
+      await supabase
+        .from("profiles")
+        .update({
+          plan,
+          credits,
+          last_credit_reset: new Date().toISOString(),
+        })
+        .eq("email", customerEmail);
+    } else if (
+      subscriptionStatus === "cancelled" ||
+      subscriptionStatus === "expired" ||
+      subscriptionStatus === "unpaid"
+    ) {
+      await supabase
+        .from("profiles")
+        .update({
+         plan: "expired", // ⬅️ instead of "free"
+          credits: 0,
+          
+        })
+        .eq("email", customerEmail);
     }
-    break;
   }
+  break;
+}
 
   // 2. Handle payment success → reset monthly credits
   case "subscription_payment_success": {
     const customerEmail = event.data?.attributes?.user_email;
-    if (customerEmail) {
-      await supabase
-        .from("profiles")
-        .update({
-          plan: "pro",
-          credits: 1000, // reset on payment success
-          last_credit_reset: new Date().toISOString(),
-        })
-        .eq("email", customerEmail);
+    const variantId = event.data?.attributes?.variant_id;
+
+     if (customerEmail) {
+    let plan = "pro";
+    let credits = 1000;
+
+    if (variantId === parseInt(process.env.LS_VARIANT_WEEKLY_ID!)) {
+      plan = "weekly";
+      credits = 250;
     }
-    break;
+
+    await supabase
+      .from("profiles")
+      .update({
+        plan,
+        credits,
+        last_credit_reset: new Date().toISOString(),
+      })
+      .eq("email", customerEmail);
   }
+  break;
+}
 }
 
 

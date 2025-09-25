@@ -1,7 +1,19 @@
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const { email,userId, variantId } = await req.json();
+  const { email,userId, planType } = await req.json();
+
+    // Map planType → variantId
+  const variantMap: Record<string, string> = {
+    weekly: process.env.LS_VARIANT_WEEKLY_ID!,
+    monthly: process.env.LEMONSQUEEZY_VARIANT_ID!,
+  };
+
+  const variantId = variantMap[planType];
+
+  if (!variantId) {
+    return NextResponse.json({ error: "Invalid plan type" }, { status: 400 });
+  }
 
   try {
     const response = await fetch("https://api.lemonsqueezy.com/v1/checkouts", {
@@ -27,7 +39,7 @@ export async function POST(req: Request) {
             variant: {
               data: {
                 type: "variants",
-                id: variantId || process.env.LEMONSQUEEZY_VARIANT_ID,
+                id: variantId,
               },
             },
           },
