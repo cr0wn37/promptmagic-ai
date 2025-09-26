@@ -56,25 +56,6 @@ const SignupPage: React.FC = () => {
     variant: "destructive",
   });
 } else {
-  // 👇 Insert profile with 7-day trial
-   if (data?.user) {
-    const { error: insertError } = await supabase.from("profiles").upsert([
-      {
-        id: data.user.id,
-        email: data.user.email,
-        plan: "trial",
-        credits: 4, // daily reset handled by SQL or cron
-        trial_start: new Date().toISOString(),
-        trial_ends_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-     },
-    { onConflict: "id" }
-    ]);
-
-    if (insertError) {
-      console.error("Error inserting trial profile:", insertError);
-    }
-  }
-
   toast({
     title: "Account Created!",
     description: "Please check your email to confirm your account.",
