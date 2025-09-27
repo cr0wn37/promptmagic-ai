@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   const body = await req.json();
 console.log("Checkout request body:", body);
-  const { email,userId, planType } = await req.json();
+  const { email,userId, planType } = body;
 
     // Map planType → variantId
   const variantMap: Record<string, string> = {
@@ -12,6 +12,8 @@ console.log("Checkout request body:", body);
   };
 
   const variantId = variantMap[planType];
+  console.log("Resolved planType:", planType, "-> variantId:", variantId);
+
 
   if (!variantId) {
     return NextResponse.json({ error: "Invalid plan type" }, { status: 400 });
@@ -49,16 +51,18 @@ console.log("Checkout request body:", body);
       }),
     });
 
-    if (!response.ok) {
-      const err = await response.text();
-      throw new Error(err);
+      if (!response.ok) {
+      const errText = await response.text();
+      console.error("LemonSqueezy API error:", errText);
+      return NextResponse.json({ error: errText }, { status: 500 });
     }
 
     const data = await response.json();
     const checkoutUrl = data?.data?.attributes?.url;
+    console.log("Checkout URL:", checkoutUrl);
+
 return NextResponse.json({ url: checkoutUrl });
   } catch (error: any) {
-    console.error("Checkout error:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("Checkout route crashed:", error);
+    return NextResponse.json({ error: error.message || "Unknown error" }, { status: 500 });
   }
-}
