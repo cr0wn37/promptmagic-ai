@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
+  const body = await req.json();
+console.log("Checkout request body:", body);
   const { email,userId, planType } = await req.json();
 
     // Map planType → variantId
