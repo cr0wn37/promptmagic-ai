@@ -5,8 +5,8 @@ export async function POST(req: Request) {
 
     // Map planType → variantId
   const variantMap: Record<string, string> = {
-    weekly: process.env.LS_VARIANT_WEEKLY_ID!,
-    monthly: process.env.LEMONSQUEEZY_VARIANT_ID!,
+    weekly: process.env.NEXT_PUBLIC_LS_VARIANT_WEEKLY_ID!,
+    monthly: process.env.NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_ID!,
   };
 
   const variantId = variantMap[planType];
@@ -53,9 +53,8 @@ export async function POST(req: Request) {
     }
 
     const data = await response.json();
-    const checkoutUrl = data.data.attributes.url;
-
-    return NextResponse.json({ url: checkoutUrl });
+    const checkoutUrl = data?.data?.attributes?.url;
+return NextResponse.json({ url: checkoutUrl });
   } catch (error: any) {
     console.error("Checkout error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });

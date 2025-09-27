@@ -61,7 +61,7 @@ const PricingPage: React.FC = () => {
       'Priority Email Support (24–48h)',
     ],
     buttonText: loading ? 'Redirecting...' : 'Get Weekly Plan',
-    buttonAction: () => handleCheckout(process.env.LS_VARIANT_WEEKLY_ID!), 
+    buttonAction: () => handleCheckout(process.env.NEXT_PUBLIC_LS_VARIANT_WEEKLY_ID!), 
     isPrimary: false,
   },
     {
@@ -79,7 +79,7 @@ const PricingPage: React.FC = () => {
         'Early access to new features & prompt packs',
       ],
       buttonText: loading ? 'Redirecting...' : 'Upgrade to Pro',
-      buttonAction: () => handleCheckout(process.env.LEMONSQUEEZY_VARIANT_ID!),
+      buttonAction: () => handleCheckout(process.env.NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_ID!),
     isPrimary: true,
   },
 ];
