@@ -5,18 +5,20 @@ import React, { useState } from 'react';
 const PricingPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
-  const handleCheckout = async (variantId: string) => {
+  const handleCheckout = async (planType: "weekly" | "monthly")=> {
+    console.log("Calling checkout with planType:", planType);
     try {
       setLoading(true);
       const res = await fetch('/api/generate/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          variantId // 👈 your Pro subscription product variant ID
+          planType
         }),
       });
 
       const data = await res.json();
+       console.log("Checkout API response:", data);
 
       if (data.url) {
         window.location.href = data.url; // redirect to Lemon Squeezy checkout
@@ -61,7 +63,7 @@ const PricingPage: React.FC = () => {
       'Priority Email Support (24–48h)',
     ],
     buttonText: loading ? 'Redirecting...' : 'Get Weekly Plan',
-    buttonAction: () => handleCheckout(process.env.NEXT_PUBLIC_LS_VARIANT_WEEKLY_ID!), 
+   buttonAction: () => handleCheckout("weekly"),
     isPrimary: false,
   },
     {
@@ -79,7 +81,7 @@ const PricingPage: React.FC = () => {
         'Early access to new features & prompt packs',
       ],
       buttonText: loading ? 'Redirecting...' : 'Upgrade to Pro',
-      buttonAction: () => handleCheckout(process.env.NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_ID!),
+      buttonAction: () => handleCheckout("monthly"),
     isPrimary: true,
   },
 ];
