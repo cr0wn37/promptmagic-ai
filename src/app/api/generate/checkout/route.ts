@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   const body = await req.json();
-console.log("Checkout request body:", body);
+
   const { email,userId, planType } = body;
 
     // Map planType → variantId
@@ -12,7 +12,7 @@ console.log("Checkout request body:", body);
   };
 
   const variantId = variantMap[planType];
-  console.log("Resolved planType:", planType, "-> variantId:", variantId);
+ 
 
 
   if (!variantId) {
@@ -59,7 +59,7 @@ console.log("Checkout request body:", body);
 
     const data = await response.json();
     const checkoutUrl = data?.data?.attributes?.url;
-    console.log("Checkout URL:", checkoutUrl);
+    
 
 return NextResponse.json({ url: checkoutUrl });
   } catch (error: any) {
