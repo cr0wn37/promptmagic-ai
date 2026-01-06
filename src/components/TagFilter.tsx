@@ -5,8 +5,8 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 
 interface TagFilterProps {
-  active: string; // The currently active category
-  onSelect: (category: string) => void; // Callback when a category is selected
+  active: string;  
+  onSelect: (category: string) => void;  
 }
 
 const allCategories = [
@@ -19,7 +19,7 @@ const TagFilter: React.FC<TagFilterProps> = ({ active, onSelect }) => {
 
   const handleSelectCategory = (category: string) => {
     onSelect(category);
-    // Optionally update URL for persistence/sharing
+     
     if (category === 'All') {
       router.push('/dashboard');
     } else {

@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState, useCallback } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { supabase } from "@/utils/supabase/client";
 import UserDropdown from '@/components/UserDropdown';
 import TagFilter from '@/components/TagFilter';
 import { useToast } from '@/hooks/use-toast';
@@ -13,7 +13,7 @@ import Link from 'next/link';
 
 import TemplateVariablesModal from '@/app/templates/components/TemplateVariablesModal'; 
 
-const supabase = createClientComponentClient();
+
 
 
 interface PromptTableData {

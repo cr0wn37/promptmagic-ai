@@ -1,13 +1,13 @@
 // src/app/dashboard/activity/page.tsx (This is a Server Component)
 
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createSupabaseServerClient } from "@/utils/supabase/server";
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import ActivityDashboard from '../components/ActivityDashboard'; // Client component for UI
+import ActivityDashboard from '../components/ActivityDashboard'; 
 import Link from 'next/link';
-import { PostgrestError } from '@supabase/supabase-js'; // Import the error type
+import { PostgrestError } from '@supabase/supabase-js'; 
 
-// Define the shape of the data returned by the Supabase RPC function
+
 interface MostUsedCategory {
   category: string;
   count: number;
@@ -19,20 +19,20 @@ export const metadata = {
 };
 
 export default async function ActivityPage() {
-  const supabase = createServerComponentClient({ cookies: () => cookies() });
+ const supabase = await createSupabaseServerClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
     redirect('/auth/login');
   }
 
-  // Fetch total prompts count
+
   const { count: totalPromptsCount, error: countError } = await supabase
     .from('responses')
     .select('*', { count: 'exact', head: true })
     .eq('user_id', user.id);
 
-  // FIX: Removed the explicit type argument from the rpc call to avoid the TypeScript error
+  
   const { data: mostUsedCategoryData, error: categoryError } = await supabase
     .rpc('get_most_used_category_by_user', { user_id_param: user.id });
 

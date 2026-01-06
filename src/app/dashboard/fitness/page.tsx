@@ -1,10 +1,10 @@
 // src/app/dashboard/fitness/page.tsx (This is a Server Component)
 
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createSupabaseServerClient } from "@/utils/supabase/server";
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-// FIX: Import the new generic CategoryPromptRunner
+
 import CategoryPromptRunner from '@/components/CategoryPromptRunner';
 
 export const metadata = {
@@ -13,7 +13,7 @@ export const metadata = {
 };
 
 export default async function FitnessPage() {
-  const supabase = createServerComponentClient({ cookies: () => cookies() });
+  const supabase = await createSupabaseServerClient();
   const { data: { user } = {} } = await supabase.auth.getUser();
 
   if (!user) {
@@ -30,7 +30,7 @@ export default async function FitnessPage() {
       </p>
       
 
-      {/* FIX: Render the generic CategoryPromptRunner and pass the 'Fitness' category */}
+  
       <CategoryPromptRunner category="Fitness" />
     </div>
   );

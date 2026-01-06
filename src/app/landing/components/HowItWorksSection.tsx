@@ -65,14 +65,14 @@ export default function HowItWorksSection() {
     <section className="relative py-20 px-4 bg-gray-50 text-gray-900 overflow-hidden">
       <div className="max-w-6xl mx-auto">
         
-        {/* Mint Badge */}
+        
         <div className="flex justify-center mb-6">
           <span className="px-4 py-1 rounded-full text-sm font-semibold bg-mint-palette-100 text-mint-palette-600">
             How it Works
           </span>
         </div>
 
-        {/* Heading */}
+     
         <div className="text-center mb-16">
           <h2 className="text-4xl sm:text-5xl font-extrabold">
             Simple Steps to AI Excellence
@@ -83,7 +83,7 @@ export default function HowItWorksSection() {
           </p>
         </div>
 
-        {/* Steps Grid */}
+        
         <motion.div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10"
           variants={howItWorksVariants}
@@ -98,7 +98,7 @@ export default function HowItWorksSection() {
               whileHover="hover"
               className="bg-white rounded-2xl p-8 shadow-md border border-gray-100 flex flex-col items-center text-center transition-all duration-300"
             >
-              {/* Icon + Number */}
+             
               <div className="relative mb-6 flex items-center justify-center w-20 h-20 bg-mint-palette-100 rounded-full">
                 {step.icon}
                 <span className="absolute -bottom-4 text-mint-palette-600 font-semibold text-lg">
@@ -106,7 +106,7 @@ export default function HowItWorksSection() {
                 </span>
               </div>
 
-              {/* Title + Description */}
+            
               <h3 className="text-xl font-semibold text-gray-900 mb-3">
                 {step.title}
               </h3>

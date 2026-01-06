@@ -43,11 +43,11 @@ const TemplateCard: React.FC<TemplateCardProps> = ({ template, index, clients })
     const encodedCategory = encodeURIComponent(template.category || 'All');
 
     if (extractedVars.length > 0) {
-      // FIX: Redirect to the dashboard with URL parameters to trigger the modal
+       
       const url = `/dashboard?template=${encodedTemplate}&category=${encodedCategory}`;
       router.push(url);
     } else {
-      // FIX: Redirect to the dashboard and trigger a direct generation for templates without variables
+       
       const url = `/dashboard?template=${encodedTemplate}&category=${encodedCategory}&variables=${encodeURIComponent(JSON.stringify({}))}`;
       router.push(url);
     }

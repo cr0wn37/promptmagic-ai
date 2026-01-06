@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { supabase } from "@/utils/supabase/client";
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import TemplateCard from './components/TemplateCard';
@@ -29,12 +29,12 @@ interface Client {
 }
 
 
-const supabase = createClientComponentClient();
+
 
 export default function TemplatesPage() {
   const router = useRouter();
   const [templates, setTemplates] = useState<FormattedTemplate[]>([]);
-  const [clients, setClients] = useState<Client[]>([]); // NEW: State to store clients
+  const [clients, setClients] = useState<Client[]>([]);  
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -68,7 +68,7 @@ export default function TemplatesPage() {
     }
   }, []);
 
-  // NEW: Fetch clients on component mount
+   
   const fetchClients = useCallback(async (userId: string) => {
     const { data, error } = await supabase
       .from('clients')
@@ -124,9 +124,9 @@ export default function TemplatesPage() {
 
   return (
     <div className="min-h-screen bg-white text-gray-900 py-16 px-4">
-      {/* New Header Section */}
+       
       <div className="max-w-6xl mx-auto mb-10 flex flex-col md:flex-row md:items-center md:justify-between animate-fade-in-up">
-        {/* Back Button */}
+         
         <Link href="/dashboard" passHref>
           <button className="px-6 py-3 rounded-full bg-mint-palette-200 text-mint-palette-700 font-semibold text-lg hover:bg-mint-palette-300 transition-colors shadow-md transform hover:-translate-y-0.5">
             <span className="flex items-center gap-2">
@@ -136,7 +136,7 @@ export default function TemplatesPage() {
           </button>
         </Link>
 
-        {/* Heading */}
+        
         <div className="text-center md:text-right mt-8 md:mt-0">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-4">
             <span className="text-gray-900">Discover</span> <span className="bg-clip-text text-transparent bg-gradient-to-r from-mint-palette-600 to-blue-600">AI Templates</span>
@@ -164,7 +164,7 @@ export default function TemplatesPage() {
           </div>
         </div>
 
-        {/* Category Filter Tags */}
+        
         <div className="flex flex-wrap gap-2">
           {allCategories.map((cat) => (
             <button

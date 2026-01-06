@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
 
@@ -18,7 +18,7 @@ interface UserDropdownProps {
 const UserDropdown: React.FC<UserDropdownProps> = ({ onLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
-  const supabase = createClientComponentClient();
+ 
   const { toast } = useToast();
   
 

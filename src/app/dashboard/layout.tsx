@@ -1,6 +1,7 @@
 // src/app/dashboard/layout.tsx (This is a Server Component)
 
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createSupabaseServerClient } from "@/utils/supabase/server";
+
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
@@ -12,7 +13,7 @@ export const metadata = {
     "Organize, run, and save AI prompts with ease. Designed for professionals in fitness, HR, education, marketing, and more.",
 };
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const supabase = createServerComponentClient({ cookies: () => cookies() });
+  const supabase = await createSupabaseServerClient();
   const { data: { user } = {} } = await supabase.auth.getUser();
 
   if (!user) {

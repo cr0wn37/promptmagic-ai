@@ -4,17 +4,17 @@ import React from 'react';
 import Link from 'next/link';
 
 interface FinalCtaSectionProps {
-  user: any; // User object from Supabase
+  user: any;  
 }
 
 const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
   return (
     <section className="relative py-24 px-6 bg-gradient-to-br from-mint-palette-500 via-blue-600 to-indigo-700 text-white overflow-hidden rounded-t-[3rem]">
-      {/* Glow effect background */}
+      
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.15),transparent)]" />
 
       <div className="relative max-w-6xl mx-auto text-center animate-fade-in-up">
-        {/* Heading */}
+      
         <h2 className="text-4xl sm:text-5xl font-extrabold leading-tight mb-6 drop-shadow-lg">
           Ready to Transform Your AI Workflow?
         </h2>
@@ -22,7 +22,7 @@ const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({ user }) => {
           Experience the power of precision-guided AI. Get started today and unlock a new level of productivity.
         </p>
 
-        {/* Pricing preview */}
+       
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
           <div className="bg-white/10 backdrop-blur-lg border border-white/20 p-8 rounded-2xl shadow-lg hover:scale-105 transition-all duration-300">
             <h3 className="text-2xl font-bold mb-2">Starter</h3>

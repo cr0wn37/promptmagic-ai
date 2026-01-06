@@ -1,7 +1,7 @@
 // src/app/dashboard/hr/page.tsx 
 // This is a Server Component
 
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createSupabaseServerClient } from "@/utils/supabase/server";
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
@@ -13,7 +13,7 @@ export const metadata = {
 };
 
 export default async function EducationPage() { 
-  const supabase = createServerComponentClient({ cookies: () => cookies() });
+  const supabase = await createSupabaseServerClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {

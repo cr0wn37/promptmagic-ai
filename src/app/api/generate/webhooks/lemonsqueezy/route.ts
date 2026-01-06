@@ -47,10 +47,10 @@ export async function POST(req: Request) {
       let credits = 1000; // default for pro
 
       // 👇 adjust based on variant
-      if (variantId === parseInt(process.env.LS_VARIANT_WEEKLY_ID!)) {
+      if (variantId === parseInt(process.env.NEXT_PUBLIC_LS_VARIANT_WEEKLY_ID!)) {
         plan = "weekly";
         credits = 250;
-      } else if (variantId === parseInt(process.env.LEMONSQUEEZY_VARIANT_ID!)) {
+      } else if (variantId === parseInt(process.env.NEXT_PUBLIC_LEMONSQUEEZY_VARIANT_ID!)) {
         plan = "pro";
         credits = 1000;
       }
@@ -73,7 +73,6 @@ export async function POST(req: Request) {
         .update({
          plan: "expired", // ⬅️ instead of "free"
           credits: 0,
-          
         })
         .eq("email", customerEmail);
     }
@@ -90,7 +89,7 @@ export async function POST(req: Request) {
     let plan = "pro";
     let credits = 1000;
 
-    if (variantId === parseInt(process.env.LS_VARIANT_WEEKLY_ID!)) {
+    if (variantId === parseInt(process.env.NEXT_PUBLIC_LS_VARIANT_WEEKLY_ID!)) {
       plan = "weekly";
       credits = 250;
     }

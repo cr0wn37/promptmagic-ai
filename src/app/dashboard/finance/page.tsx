@@ -1,10 +1,10 @@
 // src/app/dashboard/marketing/page.tsx (This is a Server Component)
 
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createSupabaseServerClient } from "@/utils/supabase/server";
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-// Import the generic CategoryPromptRunner
+
 import CategoryPromptRunner from '@/components/CategoryPromptRunner';
 
 export const metadata = {
@@ -13,7 +13,8 @@ export const metadata = {
 };
 
 export default async function FinancePage() {
-  const supabase = createServerComponentClient({ cookies: () => cookies() });
+  const supabase = await createSupabaseServerClient();
+
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
@@ -29,7 +30,7 @@ export default async function FinancePage() {
         Select a pre-defined Finance prompt and generate tailored AI responses.
       </p>
 
-      {/* Render the generic CategoryPromptRunner and pass the 'Marketing' category */}
+     
       <CategoryPromptRunner category="Finance" />
     </div>
   );

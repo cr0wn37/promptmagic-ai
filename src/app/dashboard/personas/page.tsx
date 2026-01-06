@@ -1,6 +1,6 @@
 // src/app/dashboard/personas/page.tsx (This is a Server Component)
 
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createSupabaseServerClient } from "@/utils/supabase/server";
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
@@ -24,7 +24,7 @@ export const metadata = {
 };
 
 export default async function PersonasPage() {
-  const supabase = createServerComponentClient({ cookies: () => cookies() });
+  const supabase = await createSupabaseServerClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
@@ -36,14 +36,14 @@ export default async function PersonasPage() {
   
   const addPersona = async (name: string, instructions: string) => {
     'use server';
-    const supabaseServer = createServerComponentClient({ cookies: () => cookies() });
-    const { data: { user: actionUser } } = await supabaseServer.auth.getUser();
+    const supabase = await createSupabaseServerClient();
+    const { data: { user: actionUser } } = await supabase.auth.getUser();
 
     if (!actionUser || actionUser.id !== userId) {
       return { success: false, message: "Unauthorized" };
     }
 
-    const { data, error } = await supabaseServer
+    const { data, error } = await supabase
       .from('personas')
       .insert([{ user_id: userId, name, instructions }])
       .select()
@@ -61,14 +61,14 @@ export default async function PersonasPage() {
  
   const updatePersona = async (id: string, name: string, instructions: string) => {
     'use server';
-    const supabaseServer = createServerComponentClient({ cookies: () => cookies() });
-    const { data: { user: actionUser } } = await supabaseServer.auth.getUser();
+    const supabase = await createSupabaseServerClient();
+    const { data: { user: actionUser } } = await supabase.auth.getUser();
 
     if (!actionUser || actionUser.id !== userId) {
       return { success: false, message: "Unauthorized" };
     }
 
-    const { data, error } = await supabaseServer
+    const { data, error } = await supabase
       .from('personas')
       .update({ name, instructions })
       .eq('id', id)
@@ -87,14 +87,14 @@ export default async function PersonasPage() {
 
   const deletePersona = async (id: string) => {
     'use server';
-    const supabaseServer = createServerComponentClient({ cookies: () => cookies() });
-    const { data: { user: actionUser } } = await supabaseServer.auth.getUser();
+    const supabase = await createSupabaseServerClient();
+    const { data: { user: actionUser } } = await supabase.auth.getUser();
 
     if (!actionUser || actionUser.id !== userId) {
       return { success: false, message: "Unauthorized" };
     }
 
-    const { error } = await supabaseServer
+    const { error } = await supabase
       .from('personas')
       .delete()
       .eq('id', id)

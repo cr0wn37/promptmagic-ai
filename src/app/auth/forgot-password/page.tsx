@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { supabase } from "@/utils/supabase/client";
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
 
@@ -14,7 +14,7 @@ const ForgotPasswordPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const router = useRouter();
-  const supabase = createClientComponentClient();
+  
   const { toast } = useToast();
 
   const handleResetPassword = async (e: React.FormEvent) => {

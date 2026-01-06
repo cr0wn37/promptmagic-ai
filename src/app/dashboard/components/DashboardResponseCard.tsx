@@ -1,25 +1,25 @@
 'use client';
 
 import React, { useState, useCallback } from 'react';
-import { useToast } from '@/hooks/use-toast'; // Assuming you have this toast hook available
+import { useToast } from '@/hooks/use-toast'; 
 
 interface DashboardResponseCardProps {
-  id: string; // Unique ID for the response
-  aiResponse: string; // The full AI response text
-  promptInput: string; // The user's original input/prompt text (substituted)
-  category?: string; // Optional category
-  subCategory?: string; // Optional sub-category
-  timestamp: string; // Timestamp for display
-  onDelete: (id: string) => void; // Function to trigger delete
-  onGenerateReply: (id: string, promptText: string, category?: string) => void; // Function to trigger AI reply generation
-  onToggleBookmark: (id: string, newStatus: boolean) => void; // Function to toggle bookmark
-  isGenerating: boolean; // Status if AI reply is currently generating for this card
+  id: string; 
+  aiResponse: string; 
+  promptInput: string; 
+  category?: string; 
+  subCategory?: string; 
+  timestamp: string; 
+  onDelete: (id: string) => void; 
+  onGenerateReply: (id: string, promptText: string, category?: string) => void; 
+  onToggleBookmark: (id: string, newStatus: boolean) => void; 
+  isGenerating: boolean; 
   isBookmarked?: boolean; // Bookmark status
  
 }
 
-// Define a maximum length for the AI response before truncation
-const MAX_AI_RESPONSE_LENGTH = 150; // Adjust this value as needed
+
+const MAX_AI_RESPONSE_LENGTH = 150; 
 
 const DashboardResponseCard: React.FC<DashboardResponseCardProps> = ({
   id,
@@ -35,41 +35,40 @@ const DashboardResponseCard: React.FC<DashboardResponseCardProps> = ({
   isBookmarked,
 }) => {
   const { toast } = useToast();
-  // State to track if this specific AI response is expanded
+ 
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // Function to clean markdown formatting from the AI response
+ 
   const cleanMarkdown = useCallback((text: string): string => {
     if (!text) return '';
-    // Remove bolding (**, __), italics (*, _), and headings (#)
-    let cleanedText = text.replace(/\*\*(.*?)\*\*/g, '$1'); // Remove **bold**
-    cleanedText = cleanedText.replace(/__(.*?)__/g, '$1'); // Remove __bold__
-    cleanedText = cleanedText.replace(/\*(.*?)\*/g, '$1');   // Remove *italics*
-    cleanedText = cleanedText.replace(/_(.*?)_/g, '$1');   // Remove _italics_
-    cleanedText = cleanedText.replace(/^#+\s*(.*)/gm, '$1'); // Remove # Headings (e.g., # Title, ## Subtitle)
+    
+    let cleanedText = text.replace(/\*\*(.*?)\*\*/g, '$1'); 
+    cleanedText = cleanedText.replace(/__(.*?)__/g, '$1'); 
+    cleanedText = cleanedText.replace(/\*(.*?)\*/g, '$1');   
+    cleanedText = cleanedText.replace(/_(.*?)_/g, '$1');  
+    cleanedText = cleanedText.replace(/^#+\s*(.*)/gm, '$1');
     return cleanedText.trim();
   }, []);
 
-  // Apply cleaning to the AI response before truncation/display
+  
   const cleanedAiResponse = cleanMarkdown(aiResponse);
 
-  // Determine if the AI response should be truncated
+  
   const shouldTruncate = cleanedAiResponse.length > MAX_AI_RESPONSE_LENGTH && !isExpanded;
   const displayedResponse = shouldTruncate
     ? `${cleanedAiResponse.substring(0, MAX_AI_RESPONSE_LENGTH)}...`
     : cleanedAiResponse;
 
-  // Function to toggle the expanded state of an AI response
+  
   const toggleExpand = useCallback(() => {
     setIsExpanded(prev => !prev);
   }, []);
 
-  // Function to copy text to clipboard
+  
   const handleCopy = useCallback((textToCopy: string) => {
-    // Copy the original, uncleaned AI response to clipboard
-    // This ensures the user gets the full, original AI output if they want to use it elsewhere.
+   
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(aiResponse) // Use original aiResponse here
+      navigator.clipboard.writeText(aiResponse) 
         .then(() => {
           toast({
             title: "Copied!",
@@ -86,9 +85,9 @@ const DashboardResponseCard: React.FC<DashboardResponseCardProps> = ({
           });
         });
     } else {
-      // Fallback for older browsers
+      
       const textarea = document.createElement('textarea');
-      textarea.value = aiResponse; // Use original aiResponse here
+      textarea.value = aiResponse; 
       document.body.appendChild(textarea);
       textarea.select();
       try {
@@ -109,19 +108,19 @@ const DashboardResponseCard: React.FC<DashboardResponseCardProps> = ({
         document.body.removeChild(textarea);
       }
     }
-  }, [aiResponse, toast]); // Added aiResponse to dependencies
+  }, [aiResponse, toast]); 
 
  
 
 
   return (
     <div className="relative bg-mint-palette-100/70 dark:bg-mint-palette-800/70 backdrop-blur-sm rounded-xl shadow-xl p-5 sm:p-6 space-y-4 transition-all duration-300 transform hover:scale-[1.02] animate-fade-in-up border border-mint-palette-300 dark:border-mint-palette-700 overflow-hidden group">
-      {/* Subtle background gradient overlay */}
+
       <div className="absolute inset-0 bg-gradient-to-br from-mint-palette-200/20 to-mint-palette-400/20 dark:from-transparent dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       
-      {/* Content Wrapper to ensure text is above overlay */}
+    
       <div className="relative z-10 flex flex-col h-full">
-        {/* Prompt Text & Category */}
+       
         <p 
           className="text-mint-palette-700 dark:text-mint-palette-200 font-semibold text-base mb-2 flex-grow overflow-y-auto pr-2 custom-scrollbar"
         >
@@ -153,9 +152,9 @@ const DashboardResponseCard: React.FC<DashboardResponseCardProps> = ({
           )}
         </p>
         
-        {/* Action Buttons (Bookmark, Generate AI Reply, Delete) */}
+        
         <div className="flex justify-end items-center space-x-2 mt-auto mb-4">
-          {/* Bookmark Button */}
+         
           <button
             onClick={() => onToggleBookmark(id, !isBookmarked)}
             className="p-2 rounded-full transition duration-300 ease-in-out transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-mint-palette-400"
@@ -213,7 +212,7 @@ const DashboardResponseCard: React.FC<DashboardResponseCardProps> = ({
             </h4>
             {/* Copy Button */}
             <button
-              onClick={() => handleCopy(aiResponse)} // Pass original aiResponse to copy
+              onClick={() => handleCopy(aiResponse)} 
               className="absolute top-2 right-2 p-1 rounded-full text-gray-500 hover:text-mint-palette-600 dark:text-gray-400 dark:hover:text-mint-palette-300 transition-colors"
               title="Copy AI Response"
               aria-label="Copy AI Response"

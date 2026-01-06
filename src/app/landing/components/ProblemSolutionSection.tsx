@@ -69,18 +69,18 @@ export default function ProblemSection() {
   return (
     <section id="problems" className="py-20">
     <section className="relative py-20 px-6 overflow-hidden">
-      {/* Background Image */}
+     
       <div
         className="absolute inset-0 z-0 bg-cover bg-center"
         style={{ backgroundImage: "url('/problem-bg.png')" }}
       />
-      {/* Subtle Overlay */}
+ 
       <div className="absolute inset-0 z-0 bg-white/50 dark:bg-black/50" />
 
-      {/* Content */}
+ 
       <div className="relative z-10 max-w-7xl mx-auto px-6 text-slate-800 dark:text-slate-200">
         
-        {/* Intro Heading */}
+     
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -96,9 +96,9 @@ export default function ProblemSection() {
           </p>
         </motion.div>
 
-        {/* Problem + Solution Grid */}
+   
         <div className="grid grid-cols-1 md:grid-cols-2 items-center md:gap-16">
-          {/* Problems Heading */}
+        
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -129,7 +129,7 @@ export default function ProblemSection() {
             </div>
           </motion.div>
 
-          {/* Problems Cards */}
+      
           <motion.div
             className="grid grid-cols-1 sm:grid-cols-2 gap-6"
             initial="hidden"
@@ -154,7 +154,7 @@ export default function ProblemSection() {
             ))}
           </motion.div>
 
-          {/* Solutions Cards */}
+ 
           <motion.div
             className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:order-1"
             initial="hidden"
@@ -179,7 +179,7 @@ export default function ProblemSection() {
             ))}
           </motion.div>
 
-          {/* Solutions Heading */}
+         
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}

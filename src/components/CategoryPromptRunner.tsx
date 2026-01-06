@@ -6,14 +6,14 @@ import { useToast } from '@/hooks/use-toast';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
-type VarsRecord = Record<string, string>; // key: variable name, value: label/placeholder
+type VarsRecord = Record<string, string>;  
 
 interface Prompt {
   id: string;
   prompt_text: string;
   category: string;
   sub_category?: string;
-  variables: VarsRecord; // ✅ keep as record
+  variables: VarsRecord; 
   ai_reply?: string;
   loading?: boolean;
 }
@@ -56,13 +56,11 @@ export default function CategoryPromptRunner({ category }: CategoryPromptRunnerP
 
   const currentSubCategories = subCategoriesMap[category] || ['All'];
 
-  // --- helpers ---------------------------------------------------------------
-
-  // Title-case helper for auto-generated labels
+ 
   const humanize = (s: string) =>
     s.replace(/_/g, ' ').replace(/\w\S*/g, (txt) => txt[0].toUpperCase() + txt.slice(1));
 
-  // Ensure variables are always a record (convert from string[] if needed)
+   
   const coerceVarsToRecord = (vars: unknown): VarsRecord => {
     if (Array.isArray(vars)) {
       const rec: VarsRecord = {};
@@ -73,7 +71,7 @@ export default function CategoryPromptRunner({ category }: CategoryPromptRunnerP
       return rec;
     }
     if (vars && typeof vars === 'object') {
-      // already a record
+       
       return vars as VarsRecord;
     }
     return {};
@@ -84,24 +82,24 @@ export default function CategoryPromptRunner({ category }: CategoryPromptRunnerP
     [clients, selectedClientId]
   );
 
-  // Prefill inputs for given keys using client_data
+ 
   const prefillFromClient = (client: Client, variableKeys: string[]) => {
     const updated: Record<string, string> = {};
     for (const key of variableKeys) {
       const v = client?.client_data?.[key];
      if (v !== undefined && v !== null) {
         updated[key] = String(v);
-      } else if (key === 'client_name') { // FIX: Handle client_name separately
+      } else if (key === 'client_name') {  
         updated[key] = client.client_name;
       } else {
-        // Keep existing value if any
+         
         updated[key] = inputValues[key] ?? '';
       }
     }
     setInputValues((prev) => ({ ...prev, ...updated }));
   };
 
-  // --- data fetching ---------------------------------------------------------
+   
 
   useEffect(() => {
     async function fetchData() {
@@ -109,7 +107,7 @@ export default function CategoryPromptRunner({ category }: CategoryPromptRunnerP
       const { data: userData } = await supabase.auth.getUser();
       const currentUserId = userData.user?.id;
 
-      // prompts query
+       
       let promptsQuery = supabase
         .from('prompts')
         .select('id, prompt_text, category, sub_category, variables')
@@ -154,13 +152,13 @@ export default function CategoryPromptRunner({ category }: CategoryPromptRunnerP
     fetchData();
   }, [category, toast]);
 
-  // Filter prompts by selected sub-category
+   
   const filteredPrompts =
     selectedSubCategory === 'All'
       ? allPromptsForCategory
       : allPromptsForCategory.filter((p) => p.sub_category === selectedSubCategory);
 
-  // --- actions ---------------------------------------------------------------
+   
 
   const handleRunPrompt = async () => {
     if (!selectedPrompt) {
@@ -171,7 +169,7 @@ export default function CategoryPromptRunner({ category }: CategoryPromptRunnerP
     const requiredKeys = Object.keys(selectedPrompt.variables || {});
     const finalVals = { ...inputValues };
 
-    // Validate
+   
     for (const key of requiredKeys) {
       if (!finalVals[key] || finalVals[key].trim() === '') {
         toast({
@@ -187,14 +185,14 @@ export default function CategoryPromptRunner({ category }: CategoryPromptRunnerP
     setAiResponse('');
 
     try {
-      // Attach client context (also pass separately if your API uses it)
+      
       const clientContext = selectedClient
         ? `Client Profile:\n- Name: ${selectedClient.client_name}\n- Data: ${JSON.stringify(
             selectedClient.client_data
           )}\n\n`
         : '';
 
-      // Replace {var} with user values
+      
       const finalPromptForAI = `${clientContext}${selectedPrompt.prompt_text.replace(
         /{(\w+)}/g,
         (_, key: string) => finalVals[key] ?? `{${key}}`
@@ -207,7 +205,7 @@ export default function CategoryPromptRunner({ category }: CategoryPromptRunnerP
           prompt: finalPromptForAI,
           category,
           variables: finalVals,
-          client: selectedClient, // optional: for backend routing/context
+          client: selectedClient,  
         }),
       });
 
@@ -254,7 +252,7 @@ export default function CategoryPromptRunner({ category }: CategoryPromptRunnerP
     }
   };
 
-  // When a client is chosen, prefill any matching fields
+   
   const handleSelectClient = (clientId: string) => {
     setSelectedClientId(clientId);
     if (!clientId || !selectedPrompt) return;
@@ -264,11 +262,11 @@ export default function CategoryPromptRunner({ category }: CategoryPromptRunnerP
     }
   };
 
-  // --- UI --------------------------------------------------------------------
+   
 
   return (
     <div className="bg-white/50 dark:bg-mint-palette-900/50 backdrop-blur-md rounded-xl shadow-xl p-6 border border-mint-palette-200 dark:border-mint-palette-700">
-      {/* Client select (optional) */}
+      
       <div className="flex justify-end">
       <div className="mb-4">
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Select Client (Optional)</label>
@@ -287,7 +285,7 @@ export default function CategoryPromptRunner({ category }: CategoryPromptRunnerP
       </div>
       </div>
 
-      {/* Sub-category Tabs */}
+    
 <div className="flex flex-wrap gap-2 mb-6 p-2 rounded-lg bg-emerald-50 dark:bg-emerald-900 border border-emerald-200 dark:border-emerald-700 shadow-inner">
   {currentSubCategories.map((cat) => (
     <button
@@ -309,7 +307,7 @@ export default function CategoryPromptRunner({ category }: CategoryPromptRunnerP
   ))}
 </div>
 
-      {/* Prompt grid */}
+      
       {loadingPrompts ? (
         <p className="text-center text-mint-palette-600 dark:text-mint-palette-400 text-lg py-10">Loading prompts...</p>
       ) : filteredPrompts.length === 0 ? (
@@ -327,7 +325,7 @@ export default function CategoryPromptRunner({ category }: CategoryPromptRunnerP
                   onClick={() => {
                     setSelectedPrompt(promptItem);
                     setAiResponse('');
-                    // Prepare inputs on open
+                     
                     const keys = Object.keys(promptItem.variables || {});
                     const initial: Record<string, string> = {};
                     for (const k of keys) initial[k] = '';

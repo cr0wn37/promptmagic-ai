@@ -1,6 +1,6 @@
 // src/app/dashboard/saved-prompts/page.tsx (This is a Server Component)
 
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createSupabaseServerClient } from "@/utils/supabase/server";
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
@@ -41,7 +41,7 @@ export const metadata = {
 };
 
 export default async function SavedPromptsPage() {
-  const supabase = createServerComponentClient({ cookies: () => cookies() });
+  const supabase = await createSupabaseServerClient();
   const { data: { user } = {} } = await supabase.auth.getUser();
 
   if (!user) {
@@ -114,14 +114,14 @@ export default async function SavedPromptsPage() {
 
   const deletePrompt = async (id: string) => {
     'use server';
-    const supabaseServer = createServerComponentClient({ cookies: () => cookies() });
-    const { data: { user: actionUser } } = await supabaseServer.auth.getUser();
+    const supabase = await createSupabaseServerClient();
+    const { data: { user: actionUser } } = await supabase.auth.getUser();
 
     if (!actionUser || actionUser.id !== userId) {
       return { success: false, message: "Unauthorized" };
     }
 
-    const { data: responseData, error: fetchResponseError } = await supabaseServer
+    const { data: responseData, error: fetchResponseError } = await supabase
       .from('responses')
       .select('prompt_id')
       .eq('id', id)
@@ -132,8 +132,8 @@ export default async function SavedPromptsPage() {
     }
 
     const promptIdToDelete = responseData.prompt_id;
-    const { error: deleteResponseError } = await supabaseServer.from('responses').delete().eq('id', id);
-    const { error: deletePromptError } = await supabaseServer.from('prompts').delete().eq('id', promptIdToDelete);
+    const { error: deleteResponseError } = await supabase.from('responses').delete().eq('id', id);
+    const { error: deletePromptError } = await supabase.from('prompts').delete().eq('id', promptIdToDelete);
 
     if (deleteResponseError || deletePromptError) {
       return { success: false, message: (deleteResponseError || deletePromptError)?.message || "Failed to delete prompt." };
@@ -146,8 +146,8 @@ export default async function SavedPromptsPage() {
   const updatePrompt = async (id: string, updates: { prompt_text?: string; category?: string; sub_category?: string | null; ai_reply?: string | null; favorite?: boolean }) => {
     'use server';
 
-    const supabaseServer = createServerComponentClient({ cookies: () => cookies() });
-    const { data: { user: actionUser } } = await supabaseServer.auth.getUser();
+    const supabase = await createSupabaseServerClient();
+    const { data: { user: actionUser } } = await supabase.auth.getUser();
 
     if (!actionUser || actionUser.id !== userId) {
       return { success: false, message: "Unauthorized" };
@@ -165,7 +165,7 @@ export default async function SavedPromptsPage() {
     let overallUpdateSuccess = true;
     let errorMessage = "";
 
-    const { data: responseData, error: fetchResponseError } = await supabaseServer
+    const { data: responseData, error: fetchResponseError } = await supabase
       .from('responses')
       .select('prompt_id')
       .eq('id', id)
@@ -177,7 +177,7 @@ export default async function SavedPromptsPage() {
     const promptId = responseData.prompt_id;
 
     if (Object.keys(promptUpdates).length > 0) {
-      const { error } = await supabaseServer
+      const { error } = await supabase
         .from('prompts')
         .update(promptUpdates)
         .eq('id', promptId)
@@ -190,7 +190,7 @@ export default async function SavedPromptsPage() {
     }
 
     if (Object.keys(responseUpdates).length > 0) {
-      const { error } = await supabaseServer
+      const { error } = await supabase
         .from('responses')
         .update(responseUpdates)
         .eq('id', id)

@@ -50,7 +50,7 @@ const features = [
   },
 ];
 
-// Animation variants
+ 
 const cardVariants: Variants = {
   hidden: (direction: "left" | "right") => ({
     opacity: 0,
@@ -68,16 +68,16 @@ export default function KeyFeaturesSection() {
   return (
   <section id="keyfeatures" className="relative py-10 md:py-0 overflow-hidden">
     <section className="relative py-20 px-6 overflow-hidden">
-      {/* Background Image */}
+     
       <div
         className="absolute inset-0 z-0 bg-cover bg-center"
         style={{ backgroundImage: "url('/problem-bg.png')" }}
       />
-      {/* Subtle Overlay */}
+    
       <div className="absolute inset-0 z-0 bg-white/50 dark:bg-black/50" />
 
       <div className="max-w-6xl mx-auto relative z-10 px-4">
-        {/* Section Heading */}
+     
         <div className="text-center mb-14">
           <span className="inline-block px-4 py-1.5 text-sm font-semibold tracking-wide uppercase rounded-full bg-mint-palette-100 text-mint-palette-600 mb-4 shadow-sm">
             Features
@@ -87,7 +87,7 @@ export default function KeyFeaturesSection() {
           </h2>
         </div>
 
-        {/* Zig-zag layout */}
+     
         <div className="flex flex-col gap-20">
           {features.map((feature, index) => (
             <motion.div
@@ -101,12 +101,12 @@ export default function KeyFeaturesSection() {
                 index % 2 === 0 ? "" : "md:flex-row-reverse"
               }`}
             >
-              {/* Icon */}
+          
               <div className="flex-shrink-0 p-6 bg-gradient-to-br from-mint-palette-100 to-blue-100 rounded-2xl shadow-md">
                 {feature.icon}
               </div>
 
-              {/* Content */}
+            
               <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 hover:shadow-2xl transition-all duration-300 hover:scale-[1.03]">
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
                   {feature.title}

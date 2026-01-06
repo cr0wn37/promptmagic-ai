@@ -1,8 +1,9 @@
 // src/utils/supabase/client.ts
-'use client'; // This is a client-side utility
+"use client";
 
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createBrowserClient } from "@supabase/ssr";
 
-// This initializes the client-side Supabase instance using your public environment variables.
-// Ensure NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY are set in your .env.local
-export const supabase = createClientComponentClient();
+export const supabase = createBrowserClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);

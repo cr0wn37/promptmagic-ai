@@ -8,18 +8,18 @@ export default function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
-  // useEffect only runs on the client, so now we can safely show the UI
+  
   useEffect(() => {
     setMounted(true);
-    console.log('ThemeToggle: Component mounted on client.'); // <--- ADD THIS LOG
+     
   }, []);
 
   if (!mounted) {
-    console.log('ThemeToggle: Not mounted yet, rendering null.'); // <--- ADD THIS LOG
-    return null; // Render nothing on the server
+    
+    return null;  
   }
 
-  console.log('ThemeToggle: Rendering with theme:', theme); // <--- ADD THIS LOG
+   
 
   return (
     <button

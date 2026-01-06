@@ -1,10 +1,11 @@
 // src/app/dashboard/clients/page.tsx
 
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createSupabaseServerClient } from "@/utils/supabase/server";
+
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
-import ClientManagement from '../components/ClientManagement'; // FIX: This path is correct
+import ClientManagement from '../components/ClientManagement'; 
 import Link from 'next/link';
 import { PostgrestError } from '@supabase/supabase-js';
 
@@ -22,7 +23,7 @@ export const metadata = {
 };
 
 export default async function ClientsPage() {
-  const supabase = createServerComponentClient({ cookies: () => cookies() });
+  const supabase = await createSupabaseServerClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
@@ -33,13 +34,13 @@ export default async function ClientsPage() {
 
   const addClient = async (client_name: string, client_data: any) => {
     'use server';
-    const supabaseServer = createServerComponentClient({ cookies: () => cookies() });
-    const { data: { user: actionUser } } = await supabaseServer.auth.getUser();
+    const supabase = await createSupabaseServerClient();
+    const { data: { user: actionUser } } = await supabase.auth.getUser();
 
     if (!actionUser || actionUser.id !== userId) {
       return { success: false, message: "Unauthorized" };
     }
-    const { error } = await supabaseServer
+    const { error } = await supabase
       .from('clients')
       .insert([{ user_id: userId, client_name, client_data }]);
 
@@ -53,13 +54,13 @@ export default async function ClientsPage() {
 
   const updateClient = async (id: string, client_name: string, client_data: any) => {
     'use server';
-    const supabaseServer = createServerComponentClient({ cookies: () => cookies() });
-    const { data: { user: actionUser } } = await supabaseServer.auth.getUser();
+   const supabase = await createSupabaseServerClient();
+    const { data: { user: actionUser } } = await supabase.auth.getUser();
 
     if (!actionUser || actionUser.id !== userId) {
       return { success: false, message: "Unauthorized" };
     }
-    const { error } = await supabaseServer
+    const { error } = await supabase
       .from('clients')
       .update({ client_name, client_data })
       .eq('id', id)
@@ -75,13 +76,13 @@ export default async function ClientsPage() {
 
   const deleteClient = async (id: string) => {
     'use server';
-    const supabaseServer = createServerComponentClient({ cookies: () => cookies() });
-    const { data: { user: actionUser } } = await supabaseServer.auth.getUser();
+   const supabase = await createSupabaseServerClient();
+    const { data: { user: actionUser } } = await supabase.auth.getUser();
 
     if (!actionUser || actionUser.id !== userId) {
       return { success: false, message: "Unauthorized" };
     }
-    const { error } = await supabaseServer
+    const { error } = await supabase
       .from('clients')
       .delete()
       .eq('id', id)

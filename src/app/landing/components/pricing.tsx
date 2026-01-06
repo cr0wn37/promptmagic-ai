@@ -6,7 +6,7 @@ const PricingPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const handleCheckout = async (planType: "weekly" | "monthly")=> {
-    console.log("Calling checkout with planType:", planType);
+    
     try {
       setLoading(true);
       const res = await fetch('/api/generate/checkout', {
@@ -18,7 +18,7 @@ const PricingPage: React.FC = () => {
       });
 
       const data = await res.json();
-       console.log("Checkout API response:", data);
+      
 
       if (data.url) {
         window.location.href = data.url; // redirect to Lemon Squeezy checkout
